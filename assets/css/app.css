@@ -363,6 +363,9 @@ body {
     min-height: 44px; display: flex; align-items: center; gap: 5px; white-space: nowrap;
 }
 .att-card .btn-quick:disabled { opacity: .75; }
+/* حالت «ثبت خروج» — قرمز (بعد از ثبت ورود) */
+.att-card .btn-quick.checkout { background: #dc3545; color: #fff; }
+/* حالت «ثبت شد» — تکمیل‌شده */
 .att-card .btn-quick.done { background: #d1e7dd; color: #0f5132; }
 /* دکمه جزئیات (مدال) */
 .att-card .btn-detail {

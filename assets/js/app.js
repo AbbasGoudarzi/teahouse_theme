@@ -98,27 +98,51 @@ function onShiftChange(selectEl) {
     warning.classList.toggle('show', isPast);
 }
 
-/* ب) ثبت ورود سریع (یک کلیک) با حالت لودینگ
-   - اسپینر روی دکمه فعال می‌شود، سپس (شبیه‌سازی پاسخ سرور) ساعت ورود ثبت می‌گردد
-   - در Laravel به‌جای setTimeout یک درخواست Ajax قرار می‌گیرد */
-function quickCheckIn(btn) {
-    if (btn.classList.contains('done')) return;
+/* ب) ثبت سریع ورود/خروج (یک کلیک) با حالت لودینگ
+   - چرخه‌ی سه‌حالته بر اساس data-state دکمه:
+       in   → ثبت ورود (سبز)  → پس از ثبت تبدیل می‌شود به «ثبت خروج» (قرمز)
+       out  → ثبت خروج (قرمز) → پس از ثبت تبدیل می‌شود به «ثبت شد» (تکمیل)
+       done → غیرفعال
+   - اسپینر هنگام ثبت فعال می‌شود (در Laravel به‌جای setTimeout یک درخواست Ajax قرار می‌گیرد) */
+function quickAttendance(btn) {
+    const state = btn.dataset.state;
+    if (state === 'done') return;
 
-    const original = btn.innerHTML;
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> در حال ثبت...';
 
     // شبیه‌سازی پاسخ سرور
     setTimeout(() => {
         const card = btn.closest('.att-card');
-        const entrySpan = card ? card.querySelector('.entry-time') : null;
-        if (entrySpan) {
-            entrySpan.classList.remove('not-set');
-            entrySpan.innerHTML = '<i class="bi bi-box-arrow-in-left"></i> ورود: ' + currentTime();
+
+        if (state === 'in') {
+            // ثبت ساعت ورود
+            const entrySpan = card ? card.querySelector('.entry-time') : null;
+            if (entrySpan) {
+                entrySpan.classList.remove('not-set');
+                entrySpan.innerHTML = '<i class="bi bi-box-arrow-in-left"></i> ورود: ' + currentTime();
+            }
+            // تبدیل دکمه به «ثبت خروج» (قرمز)
+            btn.dataset.state = 'out';
+            btn.classList.add('checkout');
+            btn.innerHTML = '<i class="bi bi-box-arrow-right"></i> ثبت خروج';
+
+        } else if (state === 'out') {
+            // ثبت ساعت خروج
+            const exitSpan = card ? card.querySelector('.exit-time') : null;
+            if (exitSpan) {
+                exitSpan.classList.remove('not-set');
+                exitSpan.innerHTML = '<i class="bi bi-box-arrow-right"></i> خروج: ' + currentTime();
+            }
+            // تبدیل دکمه به حالت تکمیل‌شده
+            btn.dataset.state = 'done';
+            btn.classList.remove('checkout');
+            btn.classList.add('done');
+            btn.innerHTML = '<i class="bi bi-check-lg"></i> ثبت شد';
         }
+
         btn.disabled = false;
-        btn.classList.add('done');
-        btn.innerHTML = '<i class="bi bi-check-lg"></i> ثبت شد';
+        persianizeDigits(card); // فارسی‌سازی اعداد ساعت ثبت‌شده
     }, 1200);
 }
 

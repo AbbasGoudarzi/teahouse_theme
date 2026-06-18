@@ -68,8 +68,9 @@
                 </div>
             </div>
             <!-- سمت چپ: دکمه ثبت سریع + دکمه مدال -->
+            <!-- حالت in: هنوز ورودی ثبت نشده → دکمه «ثبت ورود» سبز -->
             <div class="att-actions">
-                <button class="btn-quick" onclick="quickCheckIn(this)">
+                <button class="btn-quick" data-state="in" onclick="quickAttendance(this)">
                     <i class="bi bi-box-arrow-in-left"></i> ثبت ورود
                 </button>
                 <button class="btn-detail" onclick="openActionModal('علی رضایی')" aria-label="جزئیات">
@@ -87,9 +88,10 @@
                     <span class="exit-time not-set"><i class="bi bi-box-arrow-right"></i> خروج: ثبت نشده</span>
                 </div>
             </div>
+            <!-- حالت out: ورود ثبت شده ولی خروج نه → دکمه «ثبت خروج» قرمز -->
             <div class="att-actions">
-                <button class="btn-quick" onclick="quickCheckIn(this)">
-                    <i class="bi bi-box-arrow-in-left"></i> ثبت ورود
+                <button class="btn-quick checkout" data-state="out" onclick="quickAttendance(this)">
+                    <i class="bi bi-box-arrow-right"></i> ثبت خروج
                 </button>
                 <button class="btn-detail" onclick="openActionModal('مریم احمدی')" aria-label="جزئیات">
                     <i class="bi bi-three-dots-vertical"></i>
@@ -106,8 +108,9 @@
                     <span class="exit-time"><i class="bi bi-box-arrow-right"></i> خروج: 20:00</span>
                 </div>
             </div>
+            <!-- حالت done: ورود و خروج هر دو ثبت شده → دکمه «ثبت شد» -->
             <div class="att-actions">
-                <button class="btn-quick done" onclick="quickCheckIn(this)">
+                <button class="btn-quick done" data-state="done" onclick="quickAttendance(this)">
                     <i class="bi bi-check-lg"></i> ثبت شد
                 </button>
                 <button class="btn-detail" onclick="openActionModal('حسین کریمی')" aria-label="جزئیات">
@@ -125,8 +128,9 @@
                     <span class="exit-time not-set"><i class="bi bi-box-arrow-right"></i> خروج: ثبت نشده</span>
                 </div>
             </div>
+            <!-- حالت in: هنوز ورودی ثبت نشده → دکمه «ثبت ورود» سبز -->
             <div class="att-actions">
-                <button class="btn-quick" onclick="quickCheckIn(this)">
+                <button class="btn-quick" data-state="in" onclick="quickAttendance(this)">
                     <i class="bi bi-box-arrow-in-left"></i> ثبت ورود
                 </button>
                 <button class="btn-detail" onclick="openActionModal('زهرا موسوی')" aria-label="جزئیات">
