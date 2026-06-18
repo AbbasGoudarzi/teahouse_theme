@@ -1,0 +1,325 @@
+/* ============================================================
+   app.css — استایل‌های مشترک پنل مدیریت چایخانه
+   Mobile-First / RTL / آماده تبدیل به Laravel (asset('css/app.css'))
+============================================================= */
+
+/* ====================== متغیرهای تم ====================== */
+:root {
+    --brand-green: #084738;          /* سبز یشمی اصلی */
+    --brand-green-light: #0d6b53;    /* سبز روشن‌تر برای گرادینت */
+    --body-bg: #f8f9fa;              /* پس‌زمینه روشن بدنه */
+    --card-shadow: 0 2px 12px rgba(0, 0, 0, .06);
+}
+
+* { font-family: 'Vazirmatn', Tahoma, sans-serif; }
+
+body {
+    background-color: #e9ecef; /* خاکستری بیرونی تا محدوده‌ی 480px مشخص باشد */
+    margin: 0;
+}
+
+/* ====================== Wrapper اصلی (عرض موبایل) ====================== */
+.app-wrapper {
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    position: relative;
+    padding-bottom: 80px;            /* جلوگیری از تداخل با Bottom Nav */
+    background-color: var(--body-bg);
+    box-shadow: 0 0 20px rgba(0, 0, 0, .05);
+    overflow-x: hidden;
+}
+
+/* ====================== Header ====================== */
+.app-header {
+    background: linear-gradient(135deg, var(--brand-green-light) 0%, var(--brand-green) 100%);
+    color: #fff;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(8, 71, 56, .25);
+}
+.app-header .page-title { font-size: 1.15rem; font-weight: 700; margin: 0; }
+.app-header .back-btn,
+.app-header .header-icon {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: rgba(255, 255, 255, .15);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 1.3rem; text-decoration: none; border: none;
+}
+
+/* ====================== Main ====================== */
+.main-content { padding: 16px; }
+
+/* ====================== Bottom Navigation ====================== */
+.bottom-nav {
+    position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 100%; max-width: 480px; background: #fff;
+    display: flex; justify-content: space-around; align-items: center;
+    padding: 6px 4px;
+    border-top-left-radius: 18px; border-top-right-radius: 18px;
+    box-shadow: 0 -3px 14px rgba(0, 0, 0, .08); z-index: 1030;
+}
+.bottom-nav .nav-item {
+    flex: 1; text-align: center; text-decoration: none;
+    color: #9aa0a6; font-size: .72rem; padding: 6px 0; min-height: 44px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    transition: color .2s;
+}
+.bottom-nav .nav-item i { font-size: 1.35rem; }
+.bottom-nav .nav-item.active { color: var(--brand-green); font-weight: 700; }
+
+/* ====================== دکمه‌ها (Touch-friendly 44px) ====================== */
+.btn, .nav-item, .form-control, .form-select { min-height: 44px; }
+.btn-brand { background-color: var(--brand-green); border-color: var(--brand-green); color: #fff; }
+.btn-brand:hover, .btn-brand:focus { background-color: #063a2d; color: #fff; }
+
+/* ====================== عنوان بخش‌ها ====================== */
+.section-title {
+    font-size: .95rem; font-weight: 700; color: #343a40;
+    margin: 4px 0 14px; padding-right: 10px;
+    border-right: 4px solid var(--brand-green);
+}
+
+/* ====================== فرم‌ها (مشترک) ====================== */
+.form-label { font-size: .85rem; font-weight: 600; color: #495057; margin-bottom: 4px; }
+.form-control, .form-select { border-radius: 12px; border: 1px solid #e3e6e9; }
+.btn-submit {
+    width: 100%; border-radius: 12px;
+    background: var(--brand-green); color: #fff; font-weight: 700; padding: 13px;
+}
+.btn-submit:hover { background: #063a2d; color: #fff; }
+
+/* رنگ استاندارد وضعیت‌ها (آیکون‌ها) */
+.ic-present { color: #198754; } /* حاضر  - Success */
+.ic-leave   { color: #0dcaf0; } /* مرخصی - Info    */
+.ic-absent  { color: #dc3545; } /* غیبت  - Danger  */
+.ic-done    { color: #6c757d; } /* اتمام شیفت      */
+.ic-unknown { color: #ffc107; } /* نامشخص - Warning*/
+
+
+/* ============================================================
+   صفحه داشبورد
+============================================================= */
+.welcome-box { margin-bottom: 18px; }
+.welcome-box .hello { font-size: 1.25rem; font-weight: 700; color: #212529; }
+.welcome-box .today-date {
+    font-size: .85rem; color: #6c757d;
+    display: flex; align-items: center; gap: 5px; margin-top: 2px;
+}
+
+.branch-card {
+    background: #fff; border-radius: 16px; box-shadow: var(--card-shadow);
+    padding: 16px; margin-bottom: 14px; border: 1px solid #f0f0f0;
+}
+.branch-card .branch-name {
+    font-size: 1.05rem; font-weight: 700; color: var(--brand-green);
+    display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+}
+.branch-card .branch-name .total-badge {
+    margin-right: auto; font-size: .75rem; font-weight: 500;
+    color: #6c757d; background: #f1f3f5; padding: 3px 10px; border-radius: 20px;
+}
+.stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.stat-box {
+    background: #fafbfc; border: 1px solid #eef0f2; border-radius: 12px;
+    padding: 10px 6px; text-align: center;
+}
+.stat-box .stat-icon { font-size: 1.2rem; display: block; margin-bottom: 3px; }
+.stat-box .stat-value { font-size: 1.15rem; font-weight: 700; line-height: 1.2; color: #212529; }
+.stat-box .stat-label { font-size: .68rem; color: #6c757d; }
+
+
+/* ============================================================
+   صفحه گزارش‌ها
+============================================================= */
+.filter-bar { margin-bottom: 16px; }
+.filter-bar .form-control { border-radius: 12px; border: 1px solid #e3e6e9; background: #fff; }
+.filter-bar .btn-filter {
+    width: 100%; border-radius: 12px; background: var(--brand-green); color: #fff;
+    display: flex; align-items: center; justify-content: center; gap: 6px; font-weight: 600;
+}
+.filter-bar .btn-filter:hover { background: #063a2d; color: #fff; }
+
+.report-accordion .accordion-item {
+    border: 1px solid #f0f0f0; border-radius: 14px !important;
+    margin-bottom: 12px; overflow: hidden; box-shadow: var(--card-shadow);
+}
+.report-accordion .accordion-button {
+    padding: 14px; background: #fff; box-shadow: none; border-radius: 14px !important;
+}
+.report-accordion .accordion-button:not(.collapsed) { background: #fff; color: inherit; }
+.report-accordion .accordion-button:focus { box-shadow: none; }
+.report-accordion .accordion-button::after { margin-right: auto; margin-left: 0; } /* فلش به چپ (RTL) */
+
+.report-summary { display: flex; flex-direction: column; gap: 4px; width: 100%; }
+.report-summary .emp-name { font-weight: 700; font-size: 1rem; color: #212529; }
+.report-summary .emp-meta {
+    font-size: .78rem; color: #6c757d;
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.report-summary .emp-meta span { display: flex; align-items: center; gap: 3px; }
+
+.report-detail { padding: 0 14px 14px; }
+.report-detail .detail-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 9px 0; border-top: 1px dashed #eef0f2; font-size: .85rem;
+}
+.report-detail .detail-row .label { color: #6c757d; display: flex; align-items: center; gap: 5px; }
+.report-detail .detail-row .value { font-weight: 600; color: #212529; }
+
+/* Offcanvas فیلتر — ارتفاع به اندازه محتوا */
+.offcanvas.offcanvas-bottom.filter-canvas {
+    height: auto; max-width: 480px; margin: 0 auto;
+    border-top-left-radius: 20px; border-top-right-radius: 20px;
+}
+.filter-canvas .offcanvas-header { padding-bottom: 4px; }
+.filter-canvas .offcanvas-title { font-weight: 700; }
+.filter-canvas .form-label { font-size: .85rem; font-weight: 600; color: #495057; margin-bottom: 4px; }
+.filter-canvas .form-control, .filter-canvas .form-select { border-radius: 12px; border: 1px solid #e3e6e9; }
+.filter-canvas .btn-apply {
+    width: 100%; border-radius: 12px; background: var(--brand-green); color: #fff;
+    font-weight: 700; padding: 12px; margin-top: 6px;
+}
+.filter-canvas .btn-apply:hover { background: #063a2d; color: #fff; }
+
+
+/* ============================================================
+   صفحه پرسنل
+============================================================= */
+.search-bar { position: relative; margin-bottom: 16px; }
+.search-bar .form-control {
+    border-radius: 12px; border: 1px solid #e3e6e9; padding-right: 42px; background: #fff;
+}
+.search-bar .search-icon {
+    position: absolute; top: 50%; right: 14px; transform: translateY(-50%);
+    color: #adb5bd; font-size: 1.1rem;
+}
+
+.person-card {
+    background: #fff; border-radius: 14px; box-shadow: var(--card-shadow);
+    border: 1px solid #f0f0f0; padding: 12px 14px; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 12px;
+}
+.person-card .avatar {
+    width: 46px; height: 46px; border-radius: 50%;
+    background: #e8f3ef; color: var(--brand-green);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; flex-shrink: 0;
+}
+.person-card .person-info { flex: 1; min-width: 0; }
+.person-card .person-info .name { font-weight: 700; font-size: .98rem; color: #212529; }
+.person-card .person-info .sub { font-size: .76rem; color: #6c757d; }
+.person-card .actions { display: flex; gap: 6px; }
+.person-card .actions .btn-icon { width: 40px; height: 40px; min-height: 40px; }
+
+/* دکمه‌های آیکونی (مشترک پرسنل/شیفت) */
+.btn-icon {
+    border-radius: 10px; border: none;
+    display: flex; align-items: center; justify-content: center; font-size: 1.05rem;
+}
+.btn-icon.view { background: #e7f1ff; color: #0d6efd; }
+.btn-icon.edit { background: #fff3cd; color: #b8860b; }
+.btn-icon.del  { background: #fde2e1; color: #dc3545; }
+
+/* دکمه شناور FAB (گوشه پایین چپ داخل عرض 480px) */
+.fab {
+    position: fixed; bottom: 92px; left: 50%; margin-left: -210px;
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--brand-green); color: #fff; border: none; font-size: 1.6rem;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 16px rgba(8, 71, 56, .4); z-index: 1031; text-decoration: none;
+}
+.fab:hover { background: #063a2d; color: #fff; }
+
+/* صفحه جزئیات پرسنل — باکس‌های آماری */
+.detail-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 18px; }
+.detail-stats .d-stat {
+    background: #fff; border-radius: 12px; box-shadow: var(--card-shadow);
+    border: 1px solid #f0f0f0; padding: 12px 4px; text-align: center;
+}
+.detail-stats .d-stat .num { font-size: 1.25rem; font-weight: 700; color: var(--brand-green); }
+.detail-stats .d-stat .lbl { font-size: .66rem; color: #6c757d; margin-top: 2px; }
+
+/* ردیف سوابق با border-right رنگی (جایگزین جدول) */
+.history-row {
+    background: #fff; border-radius: 10px; box-shadow: var(--card-shadow);
+    border: 1px solid #f0f0f0; padding: 10px 12px; margin-bottom: 10px;
+    border-right: 6px solid #adb5bd;
+}
+.history-row.st-present { border-right-color: #198754; } /* حاضر  */
+.history-row.st-absent  { border-right-color: #dc3545; } /* غیبت  */
+.history-row.st-leave   { border-right-color: #0dcaf0; } /* مرخصی */
+.history-row.st-late    { border-right-color: #ffc107; } /* تاخیر */
+.history-row .h-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.history-row .h-place { font-weight: 700; font-size: .9rem; color: #212529; display: flex; align-items: center; gap: 5px; }
+.history-row .h-date { font-size: .76rem; color: #6c757d; }
+.history-row .h-times { display: flex; gap: 16px; font-size: .8rem; color: #495057; }
+.history-row .h-times span { display: flex; align-items: center; gap: 4px; }
+
+
+/* ============================================================
+   صفحه مدیریت شیفت‌ها
+============================================================= */
+.shift-accordion .accordion-item {
+    border: 1px solid #f0f0f0; border-radius: 14px !important;
+    margin-bottom: 12px; overflow: hidden; box-shadow: var(--card-shadow);
+}
+.shift-accordion .accordion-button {
+    padding: 14px; background: #fff; box-shadow: none; border-radius: 14px !important;
+}
+.shift-accordion .accordion-button:not(.collapsed) { background: #fff; color: inherit; }
+.shift-accordion .accordion-button:focus { box-shadow: none; }
+.shift-accordion .accordion-button::after { display: none; } /* فلش پیش‌فرض حذف */
+
+.shift-head { display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 8px; }
+.shift-head .s-date { display: flex; flex-direction: column; }
+.shift-head .s-date .day { font-weight: 700; font-size: 1rem; color: #212529; }
+.shift-head .s-date .date { font-size: .78rem; color: #6c757d; }
+.shift-head .s-actions { display: flex; gap: 6px; }
+.shift-head .s-actions .btn-icon { width: 38px; height: 38px; min-height: 38px; font-size: 1rem; }
+
+/* کارت‌های فرم شیفت */
+.form-card {
+    background: #fff; border-radius: 14px; box-shadow: var(--card-shadow);
+    border: 1px solid #f0f0f0; padding: 14px; margin-bottom: 14px;
+}
+
+/* کارت انتخاب شعبه (Accordion داخلی فرم) */
+.branch-pick { border: 1px solid #e9ecef; border-radius: 12px; margin-bottom: 12px; overflow: hidden; }
+.branch-pick .branch-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 14px; background: #fafbfc; cursor: pointer; min-height: 44px;
+}
+.branch-pick .branch-header .form-check-input { margin: 0; width: 1.2em; height: 1.2em; }
+.branch-pick .branch-header label { font-weight: 700; color: #343a40; cursor: pointer; flex: 1; }
+.branch-pick .branch-header .chevron { color: #adb5bd; transition: transform .2s; }
+.branch-pick.open .branch-header .chevron { transform: rotate(180deg); }
+
+/* بدنه‌ی پاس‌ها (وقتی شعبه تیک می‌خورد) */
+.branch-body { padding: 6px 14px 14px; display: none; }
+.branch-pick.open .branch-body { display: block; }
+
+.pass-block { border-top: 1px dashed #eef0f2; padding-top: 12px; margin-top: 10px; }
+.pass-block:first-child { border-top: none; margin-top: 4px; }
+.pass-block .pass-check { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.pass-block .pass-check label { font-weight: 600; color: #495057; }
+.pass-times { display: none; }            /* پیش‌فرض مخفی */
+.pass-times.show { display: flex; gap: 10px; }
+.pass-times .time-field { flex: 1; }
+.pass-times .time-field .form-label { font-size: .75rem; }
+
+/* باکس‌های آماری جزئیات شیفت (مشابه داشبورد) */
+.shift-detail-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
+.shift-detail-stats .s-box {
+    background: #fff; border-radius: 12px; box-shadow: var(--card-shadow);
+    border: 1px solid #f0f0f0; padding: 14px 4px; text-align: center;
+}
+.shift-detail-stats .s-box .ic { font-size: 1.2rem; display: block; margin-bottom: 3px; }
+.shift-detail-stats .s-box .num { font-size: 1.2rem; font-weight: 700; color: #212529; }
+.shift-detail-stats .s-box .lbl { font-size: .68rem; color: #6c757d; }
+
+
+/* ====================== کمکی: صفحات داخلی (ساب‌روتر دمو) ====================== */
+.subpage { display: none; }
