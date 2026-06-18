@@ -20,6 +20,11 @@
 <!-- ================= Wrapper اصلی ================= -->
 <div class="app-wrapper">
 
+  <!-- ====================================================
+       صفحه ۱: لیست حضور و غیاب (صفحه اصلی)
+  ===================================================== -->
+  <div id="page-list">
+
     <!-- ============ Header ============ -->
     <header class="app-header sticky-top">
         <h1 class="page-title">حضور و غیاب</h1>
@@ -139,7 +144,120 @@
             </div>
         </div>
 
+        <!-- ===== دکمه ورود به جریان «اتمام شیفت» (انتهای لیست، نیازمند اسکرول) ===== -->
+        <div class="end-shift-sep">
+            <button class="btn btn-end-shift" onclick="showSub('tpl-close-shift')">
+                <i class="bi bi-door-closed"></i> اتمام شیفت
+            </button>
+        </div>
+
     </main>
+  </div><!-- /page-list -->
+
+
+  <!-- ====================================================
+       صفحه ۲: تایید و بستن شیفت  (داخل template)
+  ===================================================== -->
+  <template id="tpl-close-shift">
+      <header class="app-header sticky-top">
+          <h1 class="page-title">تایید و بستن شیفت</h1>
+          <button class="back-btn" onclick="showList()" aria-label="بازگشت"><i class="bi bi-arrow-left"></i></button>
+      </header>
+
+      <main class="main-content">
+
+          <!-- زیرعنوان: نام/تاریخ شیفت جاری -->
+          <div class="cs-subtitle">
+              <i class="bi bi-calendar-check"></i>
+              شیفت یکشنبه ۱ خرداد ۱۴۰۳
+          </div>
+
+          <!-- ===== بخش ۱: خروج‌نزده‌ها (کارت زرد) ===== -->
+          <div class="cs-card warn">
+              <div class="cs-header">
+                  <i class="bi bi-exclamation-triangle-fill"></i>
+                  افرادی که ورود زده‌اند اما خروج ندارند
+              </div>
+              <div class="cs-body">
+                  <!-- انتخاب همه (پیش‌فرض تیک‌خورده) -->
+                  <div class="cs-selectall">
+                      <input class="form-check-input select-all-check" type="checkbox" id="selAll1"
+                             checked onclick="toggleSelectAll(this, '#csList1')">
+                      <label for="selAll1">انتخاب همه</label>
+                  </div>
+
+                  <!-- لیست افراد -->
+                  <div class="cs-list" id="csList1">
+                      <div class="cs-row">
+                          <input class="form-check-input row-check" type="checkbox" checked>
+                          <span class="cs-name">مریم احمدی</span>
+                          <span class="cs-time"><i class="bi bi-box-arrow-in-left"></i> ورود: 15:32</span>
+                          <i class="bi bi-check-circle-fill cs-check-icon"></i>
+                      </div>
+                      <div class="cs-row">
+                          <input class="form-check-input row-check" type="checkbox" checked>
+                          <span class="cs-name">سعید نوری</span>
+                          <span class="cs-time"><i class="bi bi-box-arrow-in-left"></i> ورود: 19:40</span>
+                          <i class="bi bi-check-circle-fill cs-check-icon"></i>
+                      </div>
+                  </div>
+
+                  <!-- عملیات گروهی -->
+                  <button class="btn-bulk warn" onclick="bulkResolve(this, '#csList1', 'checkout')">
+                      <i class="bi bi-box-arrow-right"></i> ثبت خروج برای همه در ساعت پایان شیفت (۲۳:۰۰)
+                  </button>
+              </div>
+          </div>
+
+          <!-- ===== بخش ۲: وضعیت نامشخص (کارت قرمز) ===== -->
+          <div class="cs-card danger">
+              <div class="cs-header">
+                  <i class="bi bi-x-octagon-fill"></i>
+                  افرادی که وضعیتشان نامشخص است (بدون هیچ ثبتی)
+              </div>
+              <div class="cs-body">
+                  <div class="cs-selectall">
+                      <input class="form-check-input select-all-check" type="checkbox" id="selAll2"
+                             checked onclick="toggleSelectAll(this, '#csList2')">
+                      <label for="selAll2">انتخاب همه</label>
+                  </div>
+
+                  <div class="cs-list" id="csList2">
+                      <div class="cs-row">
+                          <input class="form-check-input row-check" type="checkbox" checked>
+                          <span class="cs-name">علی رضایی</span>
+                          <i class="bi bi-check-circle-fill cs-check-icon"></i>
+                      </div>
+                      <div class="cs-row">
+                          <input class="form-check-input row-check" type="checkbox" checked>
+                          <span class="cs-name">زهرا موسوی</span>
+                          <i class="bi bi-check-circle-fill cs-check-icon"></i>
+                      </div>
+                  </div>
+
+                  <button class="btn-bulk danger" onclick="bulkResolve(this, '#csList2', 'absent')">
+                      <i class="bi bi-person-x-fill"></i> ثبت غیبت برای همه این افراد
+                  </button>
+
+                  <!-- پیام موفقیت -->
+                  <div class="cs-success alert alert-success py-2 px-3 mb-0">
+                      <i class="bi bi-check-circle-fill"></i> غیبت افراد انتخاب‌شده با موفقیت ثبت شد.
+                  </div>
+              </div>
+          </div>
+
+          <!-- ===== دکمه نهایی (در ابتدا غیرفعال) ===== -->
+          <button class="btn-close-shift" id="btnCloseShift" disabled onclick="confirmCloseShift()">
+              <i class="bi bi-lock-fill"></i> بستن و تایید نهایی شیفت
+          </button>
+
+      </main>
+  </template>
+
+
+  <!-- محل تزریق صفحات داخلی (ساب‌روتر) -->
+  <div id="subpage-container" class="subpage"></div>
+
 
     <!-- ============ Bottom Navigation ============ -->
     <nav class="bottom-nav">

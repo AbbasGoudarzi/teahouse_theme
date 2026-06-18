@@ -415,5 +415,100 @@ body {
 .action-modal .btn-save:hover { background: #063a2d; color: #fff; }
 
 
+/* ============================================================
+   صفحه «تایید و بستن شیفت» (Close Shift)
+============================================================= */
+/* دکمه ورود به جریان — انتهای لیست حضور و غیاب (outline سبز یشمی) */
+.btn-end-shift {
+    width: 100%; border-radius: 12px;
+    background: #fff; color: var(--brand-green);
+    border: 1.5px solid var(--brand-green); font-weight: 700; padding: 13px;
+    margin-top: 22px; display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.btn-end-shift:hover, .btn-end-shift:focus { background: #f3f8f6; color: var(--brand-green); }
+/* جداکننده‌ی واضح بالای دکمه */
+.end-shift-sep {
+    border-top: 1px dashed #d0d5da; margin-top: 24px; padding-top: 2px;
+}
+
+/* زیرعنوان صفحه (نام/تاریخ شیفت) */
+.cs-subtitle {
+    background: #e8f3ef; color: var(--brand-green);
+    border-radius: 10px; padding: 10px 12px; margin-bottom: 16px;
+    font-weight: 700; font-size: .9rem;
+    display: flex; align-items: center; gap: 6px;
+}
+
+/* کارت هشدار (نارنجی/قرمز) */
+.cs-card {
+    background: #fff; border-radius: 14px; box-shadow: var(--card-shadow);
+    border: 1px solid #f0f0f0; overflow: hidden; margin-bottom: 18px;
+}
+.cs-card .cs-header {
+    padding: 12px 14px; font-weight: 700; font-size: .92rem;
+    display: flex; align-items: center; gap: 8px;
+}
+.cs-card.warn   { border-color: #ffe69c; }
+.cs-card.warn   .cs-header { background: #fff3cd; color: #664d03; border-bottom: 1px solid #ffe69c; }
+.cs-card.danger { border-color: #f5c2c7; }
+.cs-card.danger .cs-header { background: #f8d7da; color: #842029; border-bottom: 1px solid #f5c2c7; }
+.cs-card .cs-body { padding: 12px 14px; }
+
+/* ردیف «انتخاب همه» */
+.cs-selectall {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 2px 10px; margin-bottom: 8px; border-bottom: 1px dashed #eef0f2;
+    font-weight: 600; color: #495057; min-height: 44px;
+}
+.cs-selectall label { margin: 0; cursor: pointer; }
+.cs-selectall .form-check-input { margin: 0; width: 1.2em; height: 1.2em; }
+
+/* لیست افراد */
+.cs-list { display: flex; flex-direction: column; gap: 4px; }
+.cs-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 4px; min-height: 44px; border-bottom: 1px solid #f4f5f6;
+}
+.cs-row:last-child { border-bottom: none; }
+.cs-row .form-check-input { margin: 0; width: 1.2em; height: 1.2em; flex-shrink: 0; }
+.cs-row .cs-name { font-weight: 600; color: #212529; }
+.cs-row .cs-time { font-size: .8rem; color: #6c757d; margin-right: auto; display: flex; align-items: center; gap: 4px; }
+/* آیکون تیک سبز (پس از انجام عملیات) — پیش‌فرض مخفی */
+.cs-row .cs-check-icon { color: #198754; font-size: 1.15rem; display: none; margin-right: auto; }
+/* حالت حل‌شده */
+.cs-row.resolved .cs-name { text-decoration: line-through; color: #adb5bd; }
+.cs-row.resolved .cs-time { display: none; }
+.cs-row.resolved .cs-check-icon { display: inline-block; }
+
+/* دکمه‌ی عملیات گروهی */
+.btn-bulk {
+    width: 100%; border-radius: 10px; border: none;
+    font-weight: 700; padding: 11px; margin-top: 14px;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.btn-bulk.warn   { background: #ffc107; color: #664d03; }
+.btn-bulk.danger { background: #dc3545; color: #fff; }
+.btn-bulk:disabled { opacity: .55; }
+
+/* پیام موفقیت (پیش‌فرض مخفی) */
+.cs-success {
+    display: none; align-items: center; gap: 6px;
+    margin-top: 12px; border-radius: 10px; font-size: .85rem; font-weight: 600;
+}
+.cs-success.show { display: flex; }
+
+/* دکمه‌ی نهایی بستن شیفت */
+.btn-close-shift {
+    width: 100%; border-radius: 12px;
+    background: var(--brand-green); color: #fff; border: none;
+    font-weight: 700; font-size: 1.02rem; padding: 15px;
+    margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn-close-shift:hover:not(:disabled) { background: #063a2d; }
+.btn-close-shift:disabled { background: #ced4da; color: #fff; cursor: not-allowed; }
+/* حالت بسته‌شده */
+.btn-close-shift.closed { background: #d1e7dd; color: #0f5132; }
+
+
 /* ====================== کمکی: صفحات داخلی (ساب‌روتر دمو) ====================== */
 .subpage { display: none; }

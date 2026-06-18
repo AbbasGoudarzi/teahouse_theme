@@ -175,3 +175,73 @@ function openActionModal(name) {
         bootstrap.Modal.getOrCreateInstance(modalEl).show();
     }
 }
+
+
+/* ------------------------------------------------------------
+   ۵) صفحه «تایید و بستن شیفت» (Close Shift)
+   - دو لیست هشدار (خروج‌نزده‌ها / وضعیت نامشخص) با عملیات گروهی
+   - دکمه‌ی نهایی فقط وقتی فعال می‌شود که هر دو لیست پاک‌سازی شده باشند
+------------------------------------------------------------- */
+
+/* الف) انتخاب/لغو همه‌ی چک‌باکس‌های حل‌نشده‌ی یک لیست */
+function toggleSelectAll(masterEl, listSelector) {
+    const list = document.querySelector(listSelector);
+    if (!list) return;
+    list.querySelectorAll('.cs-row:not(.resolved) .row-check').forEach(chk => {
+        chk.checked = masterEl.checked;
+    });
+}
+
+/* ب) عملیات گروهی: حل‌کردن ردیف‌های تیک‌خورده
+   action = 'checkout' (ثبت خروج) یا 'absent' (ثبت غیبت)
+   - فقط ردیف‌های تیک‌خورده‌ی حل‌نشده پردازش می‌شوند
+   - اگر ردیف حل‌نشده‌ای باقی نماند، دکمه و «انتخاب همه» غیرفعال می‌شوند */
+function bulkResolve(btn, listSelector, action) {
+    const list = document.querySelector(listSelector);
+    if (!list) return;
+
+    const targets = list.querySelectorAll('.cs-row:not(.resolved)');
+    let processed = 0;
+    targets.forEach(row => {
+        const chk = row.querySelector('.row-check');
+        if (chk && chk.checked) {
+            row.classList.add('resolved'); // خط‌خوردن نام + نمایش تیک سبز
+            chk.checked = false;
+            chk.disabled = true;
+            processed++;
+        }
+    });
+
+    // اگر همه‌ی ردیف‌ها حل شدند، بخش «کامل» می‌شود
+    const remaining = list.querySelectorAll('.cs-row:not(.resolved)').length;
+    if (remaining === 0) {
+        btn.disabled = true;
+        // غیرفعال‌کردن چک‌باکس «انتخاب همه» همان کارت
+        const masterChk = btn.closest('.cs-card').querySelector('.select-all-check');
+        if (masterChk) { masterChk.checked = false; masterChk.disabled = true; }
+
+        // نمایش پیام موفقیت همان کارت (در صورت وجود)
+        const success = btn.closest('.cs-card').querySelector('.cs-success');
+        if (success) success.classList.add('show');
+    }
+
+    if (processed > 0) updateCloseShiftButton();
+}
+
+/* ج) فعال/غیرفعال‌کردن دکمه‌ی نهایی بر اساس باقی‌ماندن ردیف حل‌نشده */
+function updateCloseShiftButton() {
+    const finalBtn = document.getElementById('btnCloseShift');
+    if (!finalBtn) return;
+    // اگر در هیچ لیستی ردیف حل‌نشده‌ای نمانده باشد → فعال
+    const pending = document.querySelectorAll('#subpage-container .cs-row:not(.resolved)').length;
+    finalBtn.disabled = pending > 0;
+}
+
+/* د) تایید نهایی بستن شیفت (دمو) */
+function confirmCloseShift() {
+    const finalBtn = document.getElementById('btnCloseShift');
+    if (!finalBtn || finalBtn.disabled) return;
+    finalBtn.disabled = true;
+    finalBtn.classList.add('closed');
+    finalBtn.innerHTML = '<i class="bi bi-check-circle-fill"></i> شیفت با موفقیت بسته شد';
+}
