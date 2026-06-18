@@ -36,58 +36,38 @@
 
             <h2 class="section-title">شیفت‌های تعریف‌شده</h2>
 
-            <!-- لیست شیفت‌ها (Accordion) -->
-            <div class="accordion shift-accordion" id="shiftsAccordion">
+            <!-- لیست شیفت‌ها (کارت ساده، بدون منوی بازشونده) -->
+            <div class="shift-list">
 
                 <!-- ---- شیفت ۱ ---- -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <div class="accordion-button collapsed shift-head"
-                             data-bs-toggle="collapse" data-bs-target="#sh1" role="button">
-                            <!-- سمت راست: تاریخ و روز -->
-                            <div class="s-date">
-                                <span class="day">پنجشنبه</span>
-                                <span class="date">۱ خرداد ۱۴۰۳</span>
-                            </div>
-                            <!-- سمت چپ: ۳ دکمه -->
-                            <div class="s-actions" onclick="event.stopPropagation();">
-                                <button class="btn-icon view" onclick="showSub('tpl-detail')" aria-label="جزئیات"><i class="bi bi-eye"></i></button>
-                                <button class="btn-icon edit" onclick="showSub('tpl-form')" aria-label="ویرایش"><i class="bi bi-pencil"></i></button>
-                                <button class="btn-icon del" aria-label="حذف"><i class="bi bi-trash"></i></button>
-                            </div>
-                        </div>
-                    </h2>
-                    <div id="sh1" class="accordion-collapse collapse" data-bs-parent="#shiftsAccordion">
-                        <div class="p-3 pt-0">
-                            <small class="text-muted">شعب فعال: مرکزی، شعبه دو · تاخیر مجاز: ۳۰ دقیقه</small>
-                        </div>
+                <div class="shift-card">
+                    <!-- سمت راست: تاریخ و روز -->
+                    <div class="s-date">
+                        <span class="day">پنجشنبه</span>
+                        <span class="date">۱ خرداد ۱۴۰۳</span>
+                    </div>
+                    <!-- سمت چپ: ۳ دکمه -->
+                    <div class="s-actions">
+                        <button class="btn-icon view" onclick="showSub('tpl-detail')" aria-label="جزئیات"><i class="bi bi-eye"></i></button>
+                        <button class="btn-icon edit" onclick="showSub('tpl-form')" aria-label="ویرایش"><i class="bi bi-pencil"></i></button>
+                        <button class="btn-icon del" aria-label="حذف"><i class="bi bi-trash"></i></button>
                     </div>
                 </div>
 
                 <!-- ---- شیفت ۲ ---- -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <div class="accordion-button collapsed shift-head"
-                             data-bs-toggle="collapse" data-bs-target="#sh2" role="button">
-                            <div class="s-date">
-                                <span class="day">جمعه</span>
-                                <span class="date">۲ خرداد ۱۴۰۳</span>
-                            </div>
-                            <div class="s-actions" onclick="event.stopPropagation();">
-                                <button class="btn-icon view" onclick="showSub('tpl-detail')" aria-label="جزئیات"><i class="bi bi-eye"></i></button>
-                                <button class="btn-icon edit" onclick="showSub('tpl-form')" aria-label="ویرایش"><i class="bi bi-pencil"></i></button>
-                                <button class="btn-icon del" aria-label="حذف"><i class="bi bi-trash"></i></button>
-                            </div>
-                        </div>
-                    </h2>
-                    <div id="sh2" class="accordion-collapse collapse" data-bs-parent="#shiftsAccordion">
-                        <div class="p-3 pt-0">
-                            <small class="text-muted">شعب فعال: هر ۴ شعبه · تاخیر مجاز: ۲۰ دقیقه</small>
-                        </div>
+                <div class="shift-card">
+                    <div class="s-date">
+                        <span class="day">جمعه</span>
+                        <span class="date">۲ خرداد ۱۴۰۳</span>
+                    </div>
+                    <div class="s-actions">
+                        <button class="btn-icon view" onclick="showSub('tpl-detail')" aria-label="جزئیات"><i class="bi bi-eye"></i></button>
+                        <button class="btn-icon edit" onclick="showSub('tpl-form')" aria-label="ویرایش"><i class="bi bi-pencil"></i></button>
+                        <button class="btn-icon del" aria-label="حذف"><i class="bi bi-trash"></i></button>
                     </div>
                 </div>
 
-            </div><!-- /shift-accordion -->
+            </div><!-- /shift-list -->
 
         </main>
 
@@ -371,6 +351,114 @@
                 <hr class="my-2">
                 <div class="d-flex justify-content-between"><span>پاس ۲</span><span class="text-muted">19:30 - 23:00</span></div>
             </div>
+
+            <!-- ===== گزارش افراد این شیفت ===== -->
+            <h2 class="section-title">گزارش افراد این شیفت</h2>
+
+            <!-- بخش فیلتر (جستجوی نام + دکمه فیلتر) -->
+            <div class="filter-bar">
+                <div class="row g-2">
+                    <div class="col-8">
+                        <input type="text" class="form-control" placeholder="جستجوی نام پرسنل...">
+                    </div>
+                    <div class="col-4">
+                        <button class="btn btn-filter" type="button"
+                                data-bs-toggle="offcanvas" data-bs-target="#shiftFilterCanvas">
+                            <i class="bi bi-funnel-fill"></i>
+                            فیلتر
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- لیست افراد (کارت ساده، بدون باز/بسته شدن) -->
+            <div class="report-card">
+                <div class="rc-info">
+                    <div class="name">علی رضایی</div>
+                    <div class="meta">
+                        <span><i class="bi bi-shop"></i> چایخانه مرکزی</span>
+                        <span><i class="bi bi-clock-history"></i> پاس ۱</span>
+                        <span><i class="bi bi-box-arrow-in-left"></i> ورود: 15:35</span>
+                        <span><i class="bi bi-box-arrow-right"></i> خروج: 20:05</span>
+                    </div>
+                </div>
+                <span class="badge bg-success rc-badge">حاضر</span>
+            </div>
+
+            <div class="report-card">
+                <div class="rc-info">
+                    <div class="name">مریم احمدی</div>
+                    <div class="meta">
+                        <span><i class="bi bi-shop"></i> چایخانه مرکزی</span>
+                        <span><i class="bi bi-clock-history"></i> پاس ۲</span>
+                        <span><i class="bi bi-box-arrow-in-left"></i> ورود: 19:45</span>
+                        <span><i class="bi bi-box-arrow-right"></i> خروج: 23:00</span>
+                    </div>
+                </div>
+                <span class="badge bg-warning text-dark rc-badge">تاخیر</span>
+            </div>
+
+            <div class="report-card">
+                <div class="rc-info">
+                    <div class="name">حسین کریمی</div>
+                    <div class="meta">
+                        <span><i class="bi bi-shop"></i> چایخانه مرکزی</span>
+                        <span><i class="bi bi-clock-history"></i> پاس ۱</span>
+                        <span class="text-muted"><i class="bi bi-dash-circle"></i> بدون تردد</span>
+                    </div>
+                </div>
+                <span class="badge bg-danger rc-badge">غایب</span>
+            </div>
+
+            <div class="report-card">
+                <div class="rc-info">
+                    <div class="name">زهرا موسوی</div>
+                    <div class="meta">
+                        <span><i class="bi bi-shop"></i> چایخانه مرکزی</span>
+                        <span><i class="bi bi-clock-history"></i> پاس ۲</span>
+                        <span class="text-info"><i class="bi bi-info-circle"></i> مرخصی استحقاقی</span>
+                    </div>
+                </div>
+                <span class="badge bg-info text-dark rc-badge">مرخصی</span>
+            </div>
+
+            <!-- Offcanvas فیلتر گزارش افراد (شعبه + وضعیت) -->
+            <div class="offcanvas offcanvas-bottom filter-canvas" tabindex="-1" id="shiftFilterCanvas">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title"><i class="bi bi-funnel"></i> فیلتر افراد</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="بستن"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label">چایخانه</label>
+                            <select class="form-select">
+                                <option selected>همه شعب</option>
+                                <option value="1">چایخانه مرکزی</option>
+                                <option value="2">شعبه دو</option>
+                                <option value="3">شعبه سه</option>
+                                <option value="4">شعبه چهار</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">وضعیت حضور</label>
+                            <select class="form-select">
+                                <option selected>همه وضعیت‌ها</option>
+                                <option value="present">حاضر</option>
+                                <option value="absent">غایب</option>
+                                <option value="late">تاخیر</option>
+                                <option value="leave">مرخصی</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <button class="btn btn-apply" type="button" data-bs-dismiss="offcanvas">
+                                <i class="bi bi-check2-circle"></i> اعمال فیلتر
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </main>
     </template>
 
