@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#084738">
+    <title>پرسنل | مدیریت چایخانه</title>
+
+    <!-- ===== Bootstrap 5 RTL (CDN) ===== -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <!-- ===== Bootstrap Icons (CDN) ===== -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- ===== فونت وزیرمتن (CDN) ===== -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+
+    <!-- ============================================================
+         استایل‌های عمومی (Base Rules) - مشترک بین تمام صفحات
+    ============================================================= -->
+    <style>
+        :root {
+            --brand-green: #084738;
+            --brand-green-light: #0d6b53;
+            --body-bg: #f8f9fa;
+            --card-shadow: 0 2px 12px rgba(0, 0, 0, .06);
+        }
+
+        * { font-family: 'Vazirmatn', Tahoma, sans-serif; }
+        body { background-color: #e9ecef; margin: 0; }
+
+        /* ----- Wrapper اصلی ----- */
+        .app-wrapper {
+            max-width: 480px; margin: 0 auto; min-height: 100vh;
+            position: relative; padding-bottom: 80px;
+            background-color: var(--body-bg);
+            box-shadow: 0 0 20px rgba(0, 0, 0, .05);
+            overflow-x: hidden;
+        }
+
+        /* ====================== Header ====================== */
+        .app-header {
+            background: linear-gradient(135deg, var(--brand-green-light) 0%, var(--brand-green) 100%);
+            color: #fff; padding: 14px 16px;
+            display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(8, 71, 56, .25);
+        }
+        .app-header .page-title { font-size: 1.15rem; font-weight: 700; margin: 0; }
+        .app-header .back-btn,
+        .app-header .header-icon {
+            width: 42px; height: 42px; border-radius: 50%;
+            background: rgba(255, 255, 255, .15);
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: 1.3rem; text-decoration: none; border: none;
+        }
+
+        /* ====================== Main ====================== */
+        .main-content { padding: 16px; }
+
+        /* ====================== Bottom Navigation ====================== */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+            width: 100%; max-width: 480px; background: #fff;
+            display: flex; justify-content: space-around; align-items: center;
+            padding: 6px 4px;
+            border-top-left-radius: 18px; border-top-right-radius: 18px;
+            box-shadow: 0 -3px 14px rgba(0, 0, 0, .08); z-index: 1030;
+        }
+        .bottom-nav .nav-item {
+            flex: 1; text-align: center; text-decoration: none;
+            color: #9aa0a6; font-size: .72rem; padding: 6px 0; min-height: 44px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+            transition: color .2s;
+        }
+        .bottom-nav .nav-item i { font-size: 1.35rem; }
+        .bottom-nav .nav-item.active { color: var(--brand-green); font-weight: 700; }
+
+        .btn, .nav-item, .form-control, .form-select { min-height: 44px; }
+        .btn-brand { background-color: var(--brand-green); border-color: var(--brand-green); color: #fff; }
+        .btn-brand:hover, .btn-brand:focus { background-color: #063a2d; color: #fff; }
+
+        .section-title {
+            font-size: .95rem; font-weight: 700; color: #343a40;
+            margin: 4px 0 14px; padding-right: 10px;
+            border-right: 4px solid var(--brand-green);
+        }
+
+        /* ====================== نوار جستجو ====================== */
+        .search-bar { position: relative; margin-bottom: 16px; }
+        .search-bar .form-control {
+            border-radius: 12px; border: 1px solid #e3e6e9; padding-right: 42px; background: #fff;
+        }
+        .search-bar .search-icon {
+            position: absolute; top: 50%; right: 14px; transform: translateY(-50%);
+            color: #adb5bd; font-size: 1.1rem;
+        }
+
+        /* ====================== کارت کارمند ====================== */
+        .person-card {
+            background: #fff; border-radius: 14px; box-shadow: var(--card-shadow);
+            border: 1px solid #f0f0f0; padding: 12px 14px; margin-bottom: 12px;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .person-card .avatar {
+            width: 46px; height: 46px; border-radius: 50%;
+            background: #e8f3ef; color: var(--brand-green);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem; flex-shrink: 0;
+        }
+        .person-card .person-info { flex: 1; min-width: 0; }
+        .person-card .person-info .name { font-weight: 700; font-size: .98rem; color: #212529; }
+        .person-card .person-info .sub { font-size: .76rem; color: #6c757d; }
+        .person-card .actions { display: flex; gap: 6px; }
+        /* دکمه‌های آیکونی کوچک ولی Touch-friendly (44px) */
+        .person-card .actions .btn-icon {
+            width: 40px; height: 40px; min-height: 40px;
+            border-radius: 10px; border: none;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.05rem;
+        }
+        .btn-icon.view  { background: #e7f1ff; color: #0d6efd; }
+        .btn-icon.edit  { background: #fff3cd; color: #b8860b; }
+        .btn-icon.del   { background: #fde2e1; color: #dc3545; }
+
+        /* ====================== دکمه شناور FAB ====================== */
+        .fab {
+            position: fixed; bottom: 92px; left: 50%;
+            /* قرارگیری در گوشه پایین چپ داخل عرض 480px */
+            margin-left: -210px;
+            width: 56px; height: 56px; border-radius: 50%;
+            background: var(--brand-green); color: #fff; border: none;
+            font-size: 1.6rem;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 6px 16px rgba(8, 71, 56, .4);
+            z-index: 1031; text-decoration: none;
+        }
+        .fab:hover { background: #063a2d; color: #fff; }
+
+        /* ====================== فرم‌ها ====================== */
+        .form-label { font-size: .85rem; font-weight: 600; color: #495057; margin-bottom: 4px; }
+        .form-control, .form-select { border-radius: 12px; border: 1px solid #e3e6e9; }
+        .btn-submit {
+            width: 100%; border-radius: 12px;
+            background: var(--brand-green); color: #fff; font-weight: 700; padding: 13px;
+        }
+        .btn-submit:hover { background: #063a2d; color: #fff; }
+
+        /* ====================== صفحه جزئیات: باکس‌های آماری ====================== */
+        .detail-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 18px; }
+        .detail-stats .d-stat {
+            background: #fff; border-radius: 12px; box-shadow: var(--card-shadow);
+            border: 1px solid #f0f0f0; padding: 12px 4px; text-align: center;
+        }
+        .detail-stats .d-stat .num { font-size: 1.25rem; font-weight: 700; color: var(--brand-green); }
+        .detail-stats .d-stat .lbl { font-size: .66rem; color: #6c757d; margin-top: 2px; }
+
+        /* ردیف سوابق با border-right رنگی (جایگزین جدول) */
+        .history-row {
+            background: #fff; border-radius: 10px; box-shadow: var(--card-shadow);
+            border: 1px solid #f0f0f0; padding: 10px 12px; margin-bottom: 10px;
+            border-right: 6px solid #adb5bd; /* رنگ پیش‌فرض */
+        }
+        .history-row.st-present { border-right-color: #198754; } /* حاضر  */
+        .history-row.st-absent  { border-right-color: #dc3545; } /* غیبت  */
+        .history-row.st-leave   { border-right-color: #0dcaf0; } /* مرخصی */
+        .history-row.st-late    { border-right-color: #ffc107; } /* تاخیر */
+        .history-row .h-top {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;
+        }
+        .history-row .h-place { font-weight: 700; font-size: .9rem; color: #212529; display: flex; align-items: center; gap: 5px; }
+        .history-row .h-date { font-size: .76rem; color: #6c757d; }
+        .history-row .h-times { display: flex; gap: 16px; font-size: .8rem; color: #495057; }
+        .history-row .h-times span { display: flex; align-items: center; gap: 4px; }
+
+        /* مدیریت نمایش/مخفی‌سازی صفحات داخلی (دمو ساب‌روتر) */
+        .subpage { display: none; }
+    </style>
+</head>
+<body>
+
+<!-- ================= Wrapper اصلی ================= -->
+<div class="app-wrapper">
+
+    <!-- ====================================================
+         صفحه ۱: لیست پرسنل (صفحه اصلی)
+    ===================================================== -->
+    <div id="page-list">
+
+        <!-- ============ Header ============ -->
+        <header class="app-header sticky-top">
+            <h1 class="page-title">پرسنل</h1>
+            <a href="#" class="header-icon" aria-label="پروفایل"><i class="bi bi-person"></i></a>
+        </header>
+
+        <!-- ============ Main ============ -->
+        <main class="main-content">
+
+            <!-- نوار جستجو -->
+            <div class="search-bar">
+                <i class="bi bi-search search-icon"></i>
+                <input type="text" class="form-control" placeholder="جستجوی نام کارمند...">
+            </div>
+
+            <h2 class="section-title">لیست کارکنان</h2>
+
+            <!-- ---- کارت کارمند ۱ ---- -->
+            <div class="person-card">
+                <div class="avatar"><i class="bi bi-person-fill"></i></div>
+                <div class="person-info">
+                    <div class="name">علی رضایی</div>
+                    <div class="sub">چایخانه مرکزی · 09121234567</div>
+                </div>
+                <div class="actions">
+                    <button class="btn-icon view" onclick="showSub('tpl-detail')" aria-label="جزئیات"><i class="bi bi-eye"></i></button>
+                    <button class="btn-icon edit" onclick="showSub('tpl-form')" aria-label="ویرایش"><i class="bi bi-pencil"></i></button>
+                    <button class="btn-icon del" aria-label="حذف"><i class="bi bi-trash"></i></button>
+                </div>
+            </div>
+
+            <!-- ---- کارت کارمند ۲ ---- -->
+            <div class="person-card">
+                <div class="avatar"><i class="bi bi-person-fill"></i></div>
+                <div class="person-info">
+                    <div class="name">مریم احمدی</div>
+                    <div class="sub">شعبه دو · 09127654321</div>
+                </div>
+                <div class="actions">
+                    <button class="btn-icon view" onclick="showSub('tpl-detail')" aria-label="جزئیات"><i class="bi bi-eye"></i></button>
+                    <button class="btn-icon edit" onclick="showSub('tpl-form')" aria-label="ویرایش"><i class="bi bi-pencil"></i></button>
+                    <button class="btn-icon del" aria-label="حذف"><i class="bi bi-trash"></i></button>
+                </div>
+            </div>
+
+            <!-- ---- کارت کارمند ۳ ---- -->
+            <div class="person-card">
+                <div class="avatar"><i class="bi bi-person-fill"></i></div>
+                <div class="person-info">
+                    <div class="name">حسین کریمی</div>
+                    <div class="sub">شعبه سه · 09120009988</div>
+                </div>
+                <div class="actions">
+                    <button class="btn-icon view" onclick="showSub('tpl-detail')" aria-label="جزئیات"><i class="bi bi-eye"></i></button>
+                    <button class="btn-icon edit" onclick="showSub('tpl-form')" aria-label="ویرایش"><i class="bi bi-pencil"></i></button>
+                    <button class="btn-icon del" aria-label="حذف"><i class="bi bi-trash"></i></button>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- ============ دکمه شناور FAB (افزودن پرسنل) ============ -->
+        <a href="#" class="fab" onclick="showSub('tpl-form'); return false;" aria-label="افزودن پرسنل">
+            <i class="bi bi-plus-lg"></i>
+        </a>
+    </div><!-- /page-list -->
+
+
+    <!-- ====================================================
+         صفحه ۲: فرم افزودن/ویرایش پرسنل  (داخل template)
+         این بخش بعداً به یک View مجزای Blade تبدیل می‌شود
+    ===================================================== -->
+    <template id="tpl-form">
+        <header class="app-header sticky-top">
+            <h1 class="page-title">افزودن پرسنل</h1>
+            <!-- دکمه بازگشت سمت چپ -->
+            <button class="back-btn" onclick="showList()" aria-label="بازگشت"><i class="bi bi-arrow-left"></i></button>
+        </header>
+
+        <main class="main-content">
+            <form onsubmit="return false;">
+                <div class="mb-3">
+                    <label class="form-label">نام و نام خانوادگی</label>
+                    <input type="text" class="form-control" placeholder="مثلاً علی رضایی">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">شماره موبایل</label>
+                    <input type="tel" class="form-control" placeholder="09xxxxxxxxx" dir="ltr">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">چایخانه</label>
+                    <select class="form-select">
+                        <option selected disabled>انتخاب چایخانه...</option>
+                        <option value="1">چایخانه مرکزی</option>
+                        <option value="2">شعبه دو</option>
+                        <option value="3">شعبه سه</option>
+                        <option value="4">شعبه چهار</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">تاریخ تولد</label>
+                    <input type="date" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-submit">
+                    <i class="bi bi-check2-circle"></i> ثبت پرسنل
+                </button>
+            </form>
+        </main>
+    </template>
+
+
+    <!-- ====================================================
+         صفحه ۳: جزئیات پرسنل  (داخل template)
+    ===================================================== -->
+    <template id="tpl-detail">
+        <header class="app-header sticky-top">
+            <h1 class="page-title">جزئیات پرسنل</h1>
+            <button class="back-btn" onclick="showList()" aria-label="بازگشت"><i class="bi bi-arrow-left"></i></button>
+        </header>
+
+        <main class="main-content">
+
+            <!-- مشخصات کلی -->
+            <div class="person-card mb-3">
+                <div class="avatar"><i class="bi bi-person-fill"></i></div>
+                <div class="person-info">
+                    <div class="name">علی رضایی</div>
+                    <div class="sub">چایخانه مرکزی · 09121234567</div>
+                </div>
+            </div>
+
+            <!-- ۴ باکس آماری -->
+            <div class="detail-stats">
+                <div class="d-stat">
+                    <div class="num">۲۶</div>
+                    <div class="lbl">شیفت موظف</div>
+                </div>
+                <div class="d-stat">
+                    <div class="num">۲۲</div>
+                    <div class="lbl">انجام شده</div>
+                </div>
+                <div class="d-stat">
+                    <div class="num">۳</div>
+                    <div class="lbl">مرخصی</div>
+                </div>
+                <div class="d-stat">
+                    <div class="num">۱</div>
+                    <div class="lbl">غیبت</div>
+                </div>
+            </div>
+
+            <h2 class="section-title">سوابق حضور</h2>
+
+            <!-- لیست سوابق (جایگزین جدول) با border-right رنگی -->
+            <div class="history-row st-present">
+                <div class="h-top">
+                    <div class="h-place"><i class="bi bi-shop"></i> چایخانه مرکزی</div>
+                    <div class="h-date">۱ خرداد ۱۴۰۳</div>
+                </div>
+                <div class="h-times">
+                    <span><i class="bi bi-box-arrow-in-left"></i> ورود: 15:32</span>
+                    <span><i class="bi bi-box-arrow-right"></i> خروج: 20:05</span>
+                </div>
+            </div>
+
+            <div class="history-row st-late">
+                <div class="h-top">
+                    <div class="h-place"><i class="bi bi-shop"></i> چایخانه مرکزی</div>
+                    <div class="h-date">۳۱ اردیبهشت ۱۴۰۳</div>
+                </div>
+                <div class="h-times">
+                    <span><i class="bi bi-box-arrow-in-left"></i> ورود: 15:50</span>
+                    <span><i class="bi bi-box-arrow-right"></i> خروج: 20:00</span>
+                </div>
+            </div>
+
+            <div class="history-row st-leave">
+                <div class="h-top">
+                    <div class="h-place"><i class="bi bi-shop"></i> چایخانه مرکزی</div>
+                    <div class="h-date">۳۰ اردیبهشت ۱۴۰۳</div>
+                </div>
+                <div class="h-times">
+                    <span><i class="bi bi-info-circle"></i> مرخصی استحقاقی</span>
+                </div>
+            </div>
+
+            <div class="history-row st-absent">
+                <div class="h-top">
+                    <div class="h-place"><i class="bi bi-shop"></i> چایخانه مرکزی</div>
+                    <div class="h-date">۲۹ اردیبهشت ۱۴۰۳</div>
+                </div>
+                <div class="h-times">
+                    <span><i class="bi bi-x-circle"></i> غیبت ثبت شده</span>
+                </div>
+            </div>
+
+        </main>
+    </template>
+
+
+    <!-- محل تزریق صفحات داخلی (ساب‌روتر) -->
+    <div id="subpage-container" class="subpage"></div>
+
+
+    <!-- ============ Bottom Navigation ============ -->
+    <nav class="bottom-nav">
+        <a href="Dashboard.html" class="nav-item">
+            <i class="bi bi-house-door"></i><span>داشبورد</span>
+        </a>
+        <a href="Reports.html" class="nav-item">
+            <i class="bi bi-list-ul"></i><span>گزارش‌ها</span>
+        </a>
+        <!-- تب فعال: پرسنل -->
+        <a href="Personnel.html" class="nav-item active">
+            <i class="bi bi-people-fill"></i><span>پرسنل</span>
+        </a>
+        <a href="Shifts.html" class="nav-item">
+            <i class="bi bi-calendar-week"></i><span>شیفت‌ها</span>
+        </a>
+    </nav>
+
+</div><!-- /app-wrapper -->
+
+<!-- ===== Bootstrap 5 JS Bundle ===== -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- ============================================================
+     اسکریپت دمو ساب‌روتر (فقط برای نمایش ساختار صفحات داخلی)
+     در Laravel این جابه‌جایی با Route و View انجام می‌شود.
+============================================================= -->
+<script>
+    const pageList = document.getElementById('page-list');
+    const subContainer = document.getElementById('subpage-container');
+
+    // نمایش یک صفحه‌ی داخلی (فرم یا جزئیات) از روی template
+    function showSub(tplId) {
+        const tpl = document.getElementById(tplId);
+        subContainer.innerHTML = '';
+        subContainer.appendChild(tpl.content.cloneNode(true));
+        pageList.style.display = 'none';
+        subContainer.style.display = 'block';
+        window.scrollTo(0, 0);
+        persianizeDigits(subContainer); // فارسی‌سازی اعداد صفحه‌ی جدید
+    }
+
+    // بازگشت به لیست پرسنل
+    function showList() {
+        subContainer.style.display = 'none';
+        subContainer.innerHTML = '';
+        pageList.style.display = 'block';
+    }
+</script>
+
+<!-- ============================================================
+     اسکریپت تبدیل اعداد لاتین به فارسی (مشترک تمام صفحات)
+============================================================= -->
+<script>
+    (function () {
+        const FA_DIGITS = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+        function toFa(str) { return str.replace(/[0-9]/g, d => FA_DIGITS[d]); }
+
+        window.persianizeDigits = function (root) {
+            root = root || document.querySelector('.app-wrapper');
+            if (!root) return;
+            const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+            let node;
+            while ((node = walker.nextNode())) {
+                const parentTag = node.parentNode.nodeName;
+                if (parentTag === 'SCRIPT' || parentTag === 'STYLE') continue;
+                if (/[0-9]/.test(node.nodeValue)) node.nodeValue = toFa(node.nodeValue);
+            }
+        };
+        document.addEventListener('DOMContentLoaded', () => persianizeDigits());
+    })();
+</script>
+</body>
+</html>

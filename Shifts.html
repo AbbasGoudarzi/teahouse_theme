@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#084738">
+    <title>شیفت‌ها | مدیریت چایخانه</title>
+
+    <!-- ===== Bootstrap 5 RTL (CDN) ===== -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <!-- ===== Bootstrap Icons (CDN) ===== -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- ===== فونت وزیرمتن (CDN) ===== -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+
+    <!-- ============================================================
+         استایل‌های عمومی (Base Rules) - مشترک بین تمام صفحات
+    ============================================================= -->
+    <style>
+        :root {
+            --brand-green: #084738;
+            --brand-green-light: #0d6b53;
+            --body-bg: #f8f9fa;
+            --card-shadow: 0 2px 12px rgba(0, 0, 0, .06);
+        }
+
+        * { font-family: 'Vazirmatn', Tahoma, sans-serif; }
+        body { background-color: #e9ecef; margin: 0; }
+
+        /* ----- Wrapper اصلی ----- */
+        .app-wrapper {
+            max-width: 480px; margin: 0 auto; min-height: 100vh;
+            position: relative; padding-bottom: 80px;
+            background-color: var(--body-bg);
+            box-shadow: 0 0 20px rgba(0, 0, 0, .05);
+            overflow-x: hidden;
+        }
+
+        /* ====================== Header ====================== */
+        .app-header {
+            background: linear-gradient(135deg, var(--brand-green-light) 0%, var(--brand-green) 100%);
+            color: #fff; padding: 14px 16px;
+            display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(8, 71, 56, .25);
+        }
+        .app-header .page-title { font-size: 1.15rem; font-weight: 700; margin: 0; }
+        .app-header .back-btn,
+        .app-header .header-icon {
+            width: 42px; height: 42px; border-radius: 50%;
+            background: rgba(255, 255, 255, .15);
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: 1.3rem; text-decoration: none; border: none;
+        }
+
+        /* ====================== Main ====================== */
+        .main-content { padding: 16px; }
+
+        /* ====================== Bottom Navigation ====================== */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+            width: 100%; max-width: 480px; background: #fff;
+            display: flex; justify-content: space-around; align-items: center;
+            padding: 6px 4px;
+            border-top-left-radius: 18px; border-top-right-radius: 18px;
+            box-shadow: 0 -3px 14px rgba(0, 0, 0, .08); z-index: 1030;
+        }
+        .bottom-nav .nav-item {
+            flex: 1; text-align: center; text-decoration: none;
+            color: #9aa0a6; font-size: .72rem; padding: 6px 0; min-height: 44px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+            transition: color .2s;
+        }
+        .bottom-nav .nav-item i { font-size: 1.35rem; }
+        .bottom-nav .nav-item.active { color: var(--brand-green); font-weight: 700; }
+
+        .btn, .nav-item, .form-control, .form-select { min-height: 44px; }
+        .btn-brand { background-color: var(--brand-green); border-color: var(--brand-green); color: #fff; }
+        .btn-brand:hover, .btn-brand:focus { background-color: #063a2d; color: #fff; }
+
+        .section-title {
+            font-size: .95rem; font-weight: 700; color: #343a40;
+            margin: 4px 0 14px; padding-right: 10px;
+            border-right: 4px solid var(--brand-green);
+        }
+
+        /* ====================== کارت شیفت (Accordion) ====================== */
+        .shift-accordion .accordion-item {
+            border: 1px solid #f0f0f0; border-radius: 14px !important;
+            margin-bottom: 12px; overflow: hidden; box-shadow: var(--card-shadow);
+        }
+        .shift-accordion .accordion-button {
+            padding: 14px; background: #fff; box-shadow: none; border-radius: 14px !important;
+        }
+        .shift-accordion .accordion-button:not(.collapsed) { background: #fff; color: inherit; }
+        .shift-accordion .accordion-button:focus { box-shadow: none; }
+        .shift-accordion .accordion-button::after { display: none; } /* فلش پیش‌فرض را حذف می‌کنیم */
+
+        .shift-head { display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 8px; }
+        .shift-head .s-date { display: flex; flex-direction: column; }
+        .shift-head .s-date .day { font-weight: 700; font-size: 1rem; color: #212529; }
+        .shift-head .s-date .date { font-size: .78rem; color: #6c757d; }
+        .shift-head .s-actions { display: flex; gap: 6px; }
+        .shift-head .s-actions .btn-icon {
+            width: 38px; height: 38px; min-height: 38px; border-radius: 10px; border: none;
+            display: flex; align-items: center; justify-content: center; font-size: 1rem;
+        }
+        .btn-icon.view { background: #e7f1ff; color: #0d6efd; }
+        .btn-icon.edit { background: #fff3cd; color: #b8860b; }
+        .btn-icon.del  { background: #fde2e1; color: #dc3545; }
+
+        /* ====================== دکمه شناور FAB ====================== */
+        .fab {
+            position: fixed; bottom: 92px; left: 50%; margin-left: -210px;
+            width: 56px; height: 56px; border-radius: 50%;
+            background: var(--brand-green); color: #fff; border: none; font-size: 1.6rem;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 6px 16px rgba(8, 71, 56, .4); z-index: 1031; text-decoration: none;
+        }
+        .fab:hover { background: #063a2d; color: #fff; }
+
+        /* ====================== فرم افزودن شیفت ====================== */
+        .form-label { font-size: .85rem; font-weight: 600; color: #495057; margin-bottom: 4px; }
+        .form-control, .form-select { border-radius: 12px; border: 1px solid #e3e6e9; }
+        .btn-submit {
+            width: 100%; border-radius: 12px;
+            background: var(--brand-green); color: #fff; font-weight: 700; padding: 13px;
+        }
+        .btn-submit:hover { background: #063a2d; color: #fff; }
+
+        /* کارت‌های فرم */
+        .form-card {
+            background: #fff; border-radius: 14px; box-shadow: var(--card-shadow);
+            border: 1px solid #f0f0f0; padding: 14px; margin-bottom: 14px;
+        }
+
+        /* کارت شعبه (Accordion داخلی فرم) */
+        .branch-pick { border: 1px solid #e9ecef; border-radius: 12px; margin-bottom: 12px; overflow: hidden; }
+        .branch-pick .branch-header {
+            display: flex; align-items: center; gap: 10px;
+            padding: 12px 14px; background: #fafbfc; cursor: pointer; min-height: 44px;
+        }
+        .branch-pick .branch-header .form-check-input { margin: 0; width: 1.2em; height: 1.2em; }
+        .branch-pick .branch-header label { font-weight: 700; color: #343a40; cursor: pointer; flex: 1; }
+        .branch-pick .branch-header .chevron { color: #adb5bd; transition: transform .2s; }
+        .branch-pick.open .branch-header .chevron { transform: rotate(180deg); }
+
+        /* بدنه‌ی پاس‌ها (وقتی شعبه تیک می‌خورد) */
+        .branch-body { padding: 6px 14px 14px; display: none; }
+        .branch-pick.open .branch-body { display: block; }
+
+        .pass-block { border-top: 1px dashed #eef0f2; padding-top: 12px; margin-top: 10px; }
+        .pass-block:first-child { border-top: none; margin-top: 4px; }
+        .pass-block .pass-check { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .pass-block .pass-check label { font-weight: 600; color: #495057; }
+        .pass-times { display: none; }            /* پیش‌فرض مخفی */
+        .pass-times.show { display: flex; gap: 10px; }
+        .pass-times .time-field { flex: 1; }
+        .pass-times .time-field .form-label { font-size: .75rem; }
+
+        /* صفحه‌ی داخلی (ساب‌روتر) */
+        .subpage { display: none; }
+
+        /* باکس‌های آماری جزئیات شیفت (مشابه داشبورد) */
+        .shift-detail-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
+        .shift-detail-stats .s-box {
+            background: #fff; border-radius: 12px; box-shadow: var(--card-shadow);
+            border: 1px solid #f0f0f0; padding: 14px 4px; text-align: center;
+        }
+        .shift-detail-stats .s-box .ic { font-size: 1.2rem; display: block; margin-bottom: 3px; }
+        .shift-detail-stats .s-box .num { font-size: 1.2rem; font-weight: 700; color: #212529; }
+        .shift-detail-stats .s-box .lbl { font-size: .68rem; color: #6c757d; }
+        .ic-present { color: #198754; } .ic-leave { color: #0dcaf0; }
+        .ic-absent { color: #dc3545; } .ic-done { color: #6c757d; } .ic-unknown { color: #ffc107; }
+    </style>
+</head>
+<body>
+
+<!-- ================= Wrapper اصلی ================= -->
+<div class="app-wrapper">
+
+    <!-- ====================================================
+         صفحه ۱: لیست شیفت‌ها (صفحه اصلی)
+    ===================================================== -->
+    <div id="page-list">
+
+        <!-- ============ Header ============ -->
+        <header class="app-header sticky-top">
+            <h1 class="page-title">مدیریت شیفت‌ها</h1>
+            <a href="#" class="header-icon" aria-label="پروفایل"><i class="bi bi-person"></i></a>
+        </header>
+
+        <!-- ============ Main ============ -->
+        <main class="main-content">
+
+            <h2 class="section-title">شیفت‌های تعریف‌شده</h2>
+
+            <!-- لیست شیفت‌ها (Accordion) -->
+            <div class="accordion shift-accordion" id="shiftsAccordion">
+
+                <!-- ---- شیفت ۱ ---- -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <div class="accordion-button collapsed shift-head"
+                             data-bs-toggle="collapse" data-bs-target="#sh1" role="button">
+                            <!-- سمت راست: تاریخ و روز -->
+                            <div class="s-date">
+                                <span class="day">پنجشنبه</span>
+                                <span class="date">۱ خرداد ۱۴۰۳</span>
+                            </div>
+                            <!-- سمت چپ: ۳ دکمه -->
+                            <div class="s-actions" onclick="event.stopPropagation();">
+                                <button class="btn-icon view" onclick="showSub('tpl-detail')" aria-label="جزئیات"><i class="bi bi-eye"></i></button>
+                                <button class="btn-icon edit" onclick="showSub('tpl-form')" aria-label="ویرایش"><i class="bi bi-pencil"></i></button>
+                                <button class="btn-icon del" aria-label="حذف"><i class="bi bi-trash"></i></button>
+                            </div>
+                        </div>
+                    </h2>
+                    <div id="sh1" class="accordion-collapse collapse" data-bs-parent="#shiftsAccordion">
+                        <div class="p-3 pt-0">
+                            <small class="text-muted">شعب فعال: مرکزی، شعبه دو · تاخیر مجاز: ۳۰ دقیقه</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ---- شیفت ۲ ---- -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <div class="accordion-button collapsed shift-head"
+                             data-bs-toggle="collapse" data-bs-target="#sh2" role="button">
+                            <div class="s-date">
+                                <span class="day">جمعه</span>
+                                <span class="date">۲ خرداد ۱۴۰۳</span>
+                            </div>
+                            <div class="s-actions" onclick="event.stopPropagation();">
+                                <button class="btn-icon view" onclick="showSub('tpl-detail')" aria-label="جزئیات"><i class="bi bi-eye"></i></button>
+                                <button class="btn-icon edit" onclick="showSub('tpl-form')" aria-label="ویرایش"><i class="bi bi-pencil"></i></button>
+                                <button class="btn-icon del" aria-label="حذف"><i class="bi bi-trash"></i></button>
+                            </div>
+                        </div>
+                    </h2>
+                    <div id="sh2" class="accordion-collapse collapse" data-bs-parent="#shiftsAccordion">
+                        <div class="p-3 pt-0">
+                            <small class="text-muted">شعب فعال: هر ۴ شعبه · تاخیر مجاز: ۲۰ دقیقه</small>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- /shift-accordion -->
+
+        </main>
+
+        <!-- ============ FAB افزودن شیفت ============ -->
+        <a href="#" class="fab" onclick="showSub('tpl-form'); return false;" aria-label="افزودن شیفت">
+            <i class="bi bi-plus-lg"></i>
+        </a>
+    </div><!-- /page-list -->
+
+
+    <!-- ====================================================
+         صفحه ۲: فرم پیچیده افزودن شیفت  (داخل template)
+    ===================================================== -->
+    <template id="tpl-form">
+        <header class="app-header sticky-top">
+            <h1 class="page-title">افزودن شیفت</h1>
+            <button class="back-btn" onclick="showList()" aria-label="بازگشت"><i class="bi bi-arrow-left"></i></button>
+        </header>
+
+        <main class="main-content">
+            <form onsubmit="return false;">
+
+                <!-- ===== کارت اول: تاریخ + تاخیر مجاز ===== -->
+                <div class="form-card">
+                    <div class="row g-2">
+                        <div class="col-7">
+                            <label class="form-label">تاریخ شیفت</label>
+                            <input type="date" class="form-control">
+                        </div>
+                        <div class="col-5">
+                            <label class="form-label">تاخیر مجاز (دقیقه)</label>
+                            <input type="number" class="form-control" value="30" min="0">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== بخش انتخاب شعب (۴ کارت آکاردئونی) ===== -->
+                <h2 class="section-title">انتخاب شعب و پاس‌ها</h2>
+
+                <!-- تابع toggleBranch: باز/بسته شدن بدنه با تیک هدر -->
+                <!-- تابع togglePass: نمایش/مخفی ساعت‌ها با تیک هر پاس -->
+
+                <!-- ---- شعبه ۱ ---- -->
+                <div class="branch-pick" id="branch1">
+                    <div class="branch-header">
+                        <input class="form-check-input" type="checkbox" id="b1" onchange="toggleBranch('branch1', this.checked)">
+                        <label for="b1">چایخانه مرکزی</label>
+                        <i class="bi bi-chevron-down chevron"></i>
+                    </div>
+                    <div class="branch-body">
+                        <!-- پاس ۱ (پیش‌فرض تیک‌خورده) -->
+                        <div class="pass-block">
+                            <div class="pass-check">
+                                <input class="form-check-input" type="checkbox" id="b1p1" checked
+                                       onchange="togglePass('b1p1times', this.checked)">
+                                <label for="b1p1">پاس ۱</label>
+                            </div>
+                            <div class="pass-times show" id="b1p1times">
+                                <div class="time-field">
+                                    <label class="form-label">شروع</label>
+                                    <input type="time" class="form-control" value="15:30">
+                                </div>
+                                <div class="time-field">
+                                    <label class="form-label">پایان</label>
+                                    <input type="time" class="form-control" value="20:00">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- پاس ۲ (پیش‌فرض تیک‌خورده) -->
+                        <div class="pass-block">
+                            <div class="pass-check">
+                                <input class="form-check-input" type="checkbox" id="b1p2" checked
+                                       onchange="togglePass('b1p2times', this.checked)">
+                                <label for="b1p2">پاس ۲</label>
+                            </div>
+                            <div class="pass-times show" id="b1p2times">
+                                <div class="time-field">
+                                    <label class="form-label">شروع</label>
+                                    <input type="time" class="form-control" value="19:30">
+                                </div>
+                                <div class="time-field">
+                                    <label class="form-label">پایان</label>
+                                    <input type="time" class="form-control" value="23:00">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- پاس فوق‌العاده (پیش‌فرض بدون تیک) -->
+                        <div class="pass-block">
+                            <div class="pass-check">
+                                <input class="form-check-input" type="checkbox" id="b1p3"
+                                       onchange="togglePass('b1p3times', this.checked)">
+                                <label for="b1p3">پاس فوق‌العاده</label>
+                            </div>
+                            <div class="pass-times" id="b1p3times">
+                                <div class="time-field">
+                                    <label class="form-label">شروع</label>
+                                    <input type="time" class="form-control" value="23:00">
+                                </div>
+                                <div class="time-field">
+                                    <label class="form-label">پایان</label>
+                                    <input type="time" class="form-control" value="01:00">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ---- شعبه ۲ ---- -->
+                <div class="branch-pick" id="branch2">
+                    <div class="branch-header">
+                        <input class="form-check-input" type="checkbox" id="b2" onchange="toggleBranch('branch2', this.checked)">
+                        <label for="b2">شعبه دو</label>
+                        <i class="bi bi-chevron-down chevron"></i>
+                    </div>
+                    <div class="branch-body">
+                        <div class="pass-block">
+                            <div class="pass-check">
+                                <input class="form-check-input" type="checkbox" id="b2p1" checked onchange="togglePass('b2p1times', this.checked)">
+                                <label for="b2p1">پاس ۱</label>
+                            </div>
+                            <div class="pass-times show" id="b2p1times">
+                                <div class="time-field"><label class="form-label">شروع</label><input type="time" class="form-control" value="15:30"></div>
+                                <div class="time-field"><label class="form-label">پایان</label><input type="time" class="form-control" value="20:00"></div>
+                            </div>
+                        </div>
+                        <div class="pass-block">
+                            <div class="pass-check">
+                                <input class="form-check-input" type="checkbox" id="b2p2" checked onchange="togglePass('b2p2times', this.checked)">
+                                <label for="b2p2">پاس ۲</label>
+                            </div>
+                            <div class="pass-times show" id="b2p2times">
+                                <div class="time-field"><label class="form-label">شروع</label><input type="time" class="form-control" value="19:30"></div>
+                                <div class="time-field"><label class="form-label">پایان</label><input type="time" class="form-control" value="23:00"></div>
+                            </div>
+                        </div>
+                        <div class="pass-block">
+                            <div class="pass-check">
+                                <input class="form-check-input" type="checkbox" id="b2p3" onchange="togglePass('b2p3times', this.checked)">
+                                <label for="b2p3">پاس فوق‌العاده</label>
+                            </div>
+                            <div class="pass-times" id="b2p3times">
+                                <div class="time-field"><label class="form-label">شروع</label><input type="time" class="form-control" value="23:00"></div>
+                                <div class="time-field"><label class="form-label">پایان</label><input type="time" class="form-control" value="01:00"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ---- شعبه ۳ ---- -->
+                <div class="branch-pick" id="branch3">
+                    <div class="branch-header">
+                        <input class="form-check-input" type="checkbox" id="b3" onchange="toggleBranch('branch3', this.checked)">
+                        <label for="b3">شعبه سه</label>
+                        <i class="bi bi-chevron-down chevron"></i>
+                    </div>
+                    <div class="branch-body">
+                        <div class="pass-block">
+                            <div class="pass-check">
+                                <input class="form-check-input" type="checkbox" id="b3p1" checked onchange="togglePass('b3p1times', this.checked)">
+                                <label for="b3p1">پاس ۱</label>
+                            </div>
+                            <div class="pass-times show" id="b3p1times">
+                                <div class="time-field"><label class="form-label">شروع</label><input type="time" class="form-control" value="15:30"></div>
+                                <div class="time-field"><label class="form-label">پایان</label><input type="time" class="form-control" value="20:00"></div>
+                            </div>
+                        </div>
+                        <div class="pass-block">
+                            <div class="pass-check">
+                                <input class="form-check-input" type="checkbox" id="b3p2" checked onchange="togglePass('b3p2times', this.checked)">
+                                <label for="b3p2">پاس ۲</label>
+                            </div>
+                            <div class="pass-times show" id="b3p2times">
+                                <div class="time-field"><label class="form-label">شروع</label><input type="time" class="form-control" value="19:30"></div>
+                                <div class="time-field"><label class="form-label">پایان</label><input type="time" class="form-control" value="23:00"></div>
+                            </div>
+                        </div>
+                        <div class="pass-block">
+                            <div class="pass-check">
+                                <input class="form-check-input" type="checkbox" id="b3p3" onchange="togglePass('b3p3times', this.checked)">
+                                <label for="b3p3">پاس فوق‌العاده</label>
+                            </div>
+                            <div class="pass-times" id="b3p3times">
+                                <div class="time-field"><label class="form-label">شروع</label><input type="time" class="form-control" value="23:00"></div>
+                                <div class="time-field"><label class="form-label">پایان</label><input type="time" class="form-control" value="01:00"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ---- شعبه ۴ ---- -->
+                <div class="branch-pick" id="branch4">
+                    <div class="branch-header">
+                        <input class="form-check-input" type="checkbox" id="b4" onchange="toggleBranch('branch4', this.checked)">
+                        <label for="b4">شعبه چهار</label>
+                        <i class="bi bi-chevron-down chevron"></i>
+                    </div>
+                    <div class="branch-body">
+                        <div class="pass-block">
+                            <div class="pass-check">
+                                <input class="form-check-input" type="checkbox" id="b4p1" checked onchange="togglePass('b4p1times', this.checked)">
+                                <label for="b4p1">پاس ۱</label>
+                            </div>
+                            <div class="pass-times show" id="b4p1times">
+                                <div class="time-field"><label class="form-label">شروع</label><input type="time" class="form-control" value="15:30"></div>
+                                <div class="time-field"><label class="form-label">پایان</label><input type="time" class="form-control" value="20:00"></div>
+                            </div>
+                        </div>
+                        <div class="pass-block">
+                            <div class="pass-check">
+                                <input class="form-check-input" type="checkbox" id="b4p2" checked onchange="togglePass('b4p2times', this.checked)">
+                                <label for="b4p2">پاس ۲</label>
+                            </div>
+                            <div class="pass-times show" id="b4p2times">
+                                <div class="time-field"><label class="form-label">شروع</label><input type="time" class="form-control" value="19:30"></div>
+                                <div class="time-field"><label class="form-label">پایان</label><input type="time" class="form-control" value="23:00"></div>
+                            </div>
+                        </div>
+                        <div class="pass-block">
+                            <div class="pass-check">
+                                <input class="form-check-input" type="checkbox" id="b4p3" onchange="togglePass('b4p3times', this.checked)">
+                                <label for="b4p3">پاس فوق‌العاده</label>
+                            </div>
+                            <div class="pass-times" id="b4p3times">
+                                <div class="time-field"><label class="form-label">شروع</label><input type="time" class="form-control" value="23:00"></div>
+                                <div class="time-field"><label class="form-label">پایان</label><input type="time" class="form-control" value="01:00"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-submit mt-2">
+                    <i class="bi bi-check2-circle"></i> ثبت شیفت
+                </button>
+            </form>
+        </main>
+    </template>
+
+
+    <!-- ====================================================
+         صفحه ۳: جزئیات شیفت (مشابه داشبورد)  - داخل template
+    ===================================================== -->
+    <template id="tpl-detail">
+        <header class="app-header sticky-top">
+            <h1 class="page-title">جزئیات شیفت</h1>
+            <button class="back-btn" onclick="showList()" aria-label="بازگشت"><i class="bi bi-arrow-left"></i></button>
+        </header>
+
+        <main class="main-content">
+            <div class="welcome-box mb-2">
+                <h2 class="section-title">شیفت پنجشنبه ۱ خرداد — چایخانه مرکزی</h2>
+            </div>
+
+            <!-- باکس‌های آماری کامل (مشابه داشبورد) -->
+            <div class="shift-detail-stats">
+                <div class="s-box">
+                    <i class="bi bi-person-check-fill ic ic-present"></i>
+                    <div class="num">۸</div><div class="lbl">حاضر</div>
+                </div>
+                <div class="s-box">
+                    <i class="bi bi-person-x-fill ic ic-absent"></i>
+                    <div class="num">۲</div><div class="lbl">غایب</div>
+                </div>
+                <div class="s-box">
+                    <i class="bi bi-airplane-fill ic ic-leave"></i>
+                    <div class="num">۱</div><div class="lbl">مرخصی</div>
+                </div>
+                <div class="s-box">
+                    <i class="bi bi-hourglass-split ic ic-unknown"></i>
+                    <div class="num">۳</div><div class="lbl">تاخیر</div>
+                </div>
+                <div class="s-box">
+                    <i class="bi bi-check2-circle ic ic-done"></i>
+                    <div class="num">۵</div><div class="lbl">اتمام شیفت</div>
+                </div>
+                <div class="s-box">
+                    <i class="bi bi-people-fill ic ic-done"></i>
+                    <div class="num">۱۲</div><div class="lbl">کل پرسنل</div>
+                </div>
+            </div>
+
+            <h2 class="section-title">پاس‌های این شیفت</h2>
+            <div class="form-card">
+                <div class="d-flex justify-content-between"><span>پاس ۱</span><span class="text-muted">15:30 - 20:00</span></div>
+                <hr class="my-2">
+                <div class="d-flex justify-content-between"><span>پاس ۲</span><span class="text-muted">19:30 - 23:00</span></div>
+            </div>
+        </main>
+    </template>
+
+
+    <!-- محل تزریق صفحات داخلی (ساب‌روتر) -->
+    <div id="subpage-container" class="subpage"></div>
+
+
+    <!-- ============ Bottom Navigation ============ -->
+    <nav class="bottom-nav">
+        <a href="Dashboard.html" class="nav-item">
+            <i class="bi bi-house-door"></i><span>داشبورد</span>
+        </a>
+        <a href="Reports.html" class="nav-item">
+            <i class="bi bi-list-ul"></i><span>گزارش‌ها</span>
+        </a>
+        <a href="Personnel.html" class="nav-item">
+            <i class="bi bi-people"></i><span>پرسنل</span>
+        </a>
+        <!-- تب فعال: شیفت‌ها -->
+        <a href="Shifts.html" class="nav-item active">
+            <i class="bi bi-calendar-week-fill"></i><span>شیفت‌ها</span>
+        </a>
+    </nav>
+
+</div><!-- /app-wrapper -->
+
+<!-- ===== Bootstrap 5 JS Bundle ===== -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- ============================================================
+     اسکریپت‌های تعاملی فرم شیفت + ساب‌روتر دمو
+============================================================= -->
+<script>
+    const pageList = document.getElementById('page-list');
+    const subContainer = document.getElementById('subpage-container');
+
+    // نمایش صفحه داخلی از روی template
+    function showSub(tplId) {
+        const tpl = document.getElementById(tplId);
+        subContainer.innerHTML = '';
+        subContainer.appendChild(tpl.content.cloneNode(true));
+        pageList.style.display = 'none';
+        subContainer.style.display = 'block';
+        window.scrollTo(0, 0);
+        persianizeDigits(subContainer);
+    }
+    function showList() {
+        subContainer.style.display = 'none';
+        subContainer.innerHTML = '';
+        pageList.style.display = 'block';
+    }
+
+    // باز/بسته شدن بدنه‌ی شعبه با تیک هدر
+    function toggleBranch(branchId, checked) {
+        document.getElementById(branchId).classList.toggle('open', checked);
+    }
+    // نمایش/مخفی شدن ساعت‌های یک پاس با تیک آن
+    function togglePass(timesId, checked) {
+        document.getElementById(timesId).classList.toggle('show', checked);
+    }
+</script>
+
+<!-- ============================================================
+     اسکریپت تبدیل اعداد لاتین به فارسی (مشترک تمام صفحات)
+============================================================= -->
+<script>
+    (function () {
+        const FA_DIGITS = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+        function toFa(str) { return str.replace(/[0-9]/g, d => FA_DIGITS[d]); }
+
+        window.persianizeDigits = function (root) {
+            root = root || document.querySelector('.app-wrapper');
+            if (!root) return;
+            const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+            let node;
+            while ((node = walker.nextNode())) {
+                const parentTag = node.parentNode.nodeName;
+                if (parentTag === 'SCRIPT' || parentTag === 'STYLE') continue;
+                if (/[0-9]/.test(node.nodeValue)) node.nodeValue = toFa(node.nodeValue);
+            }
+        };
+        document.addEventListener('DOMContentLoaded', () => persianizeDigits());
+    })();
+</script>
+</body>
+</html>
