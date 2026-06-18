@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#084738">
+    <title>حضور و غیاب | مدیریت چایخانه</title>
+
+    <!-- ===== Bootstrap 5 RTL (CDN) ===== -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <!-- ===== Bootstrap Icons (CDN) ===== -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- ===== فونت وزیرمتن (CDN) ===== -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <!-- ===== استایل مشترک پروژه ===== -->
+    <link href="assets/css/app.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- ================= Wrapper اصلی ================= -->
+<div class="app-wrapper">
+
+    <!-- ============ Header ============ -->
+    <header class="app-header sticky-top">
+        <h1 class="page-title">حضور و غیاب</h1>
+        <a href="#" class="header-icon" aria-label="پروفایل"><i class="bi bi-person"></i></a>
+    </header>
+
+    <!-- ============ Main ============ -->
+    <main class="main-content">
+
+        <!-- ===== انتخاب شیفت (پیش‌فرض: آخرین شیفت) ===== -->
+        <div class="att-shift-select">
+            <label class="form-label"><i class="bi bi-calendar-week"></i> انتخاب شیفت</label>
+            <!-- آخرین شیفت = شیفت امروز (data-past="false") و پیش‌فرض selected است -->
+            <select class="form-select" id="shiftSelect" onchange="onShiftChange(this)">
+                <option data-past="true"  value="3">پنجشنبه ۲۹ اردیبهشت ۱۴۰۳</option>
+                <option data-past="true"  value="2">جمعه ۳۰ اردیبهشت ۱۴۰۳</option>
+                <option data-past="true"  value="1">شنبه ۳۱ اردیبهشت ۱۴۰۳</option>
+                <option data-past="false" value="0" selected>یکشنبه ۱ خرداد ۱۴۰۳ (شیفت جاری)</option>
+            </select>
+        </div>
+
+        <!-- ===== هشدار ویرایش اطلاعات گذشته (نوار زرد) ===== -->
+        <div class="past-warning" id="pastWarning">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+            شما در حال ویرایش اطلاعات گذشته هستید.
+        </div>
+
+        <!-- ===== Search Box تمام‌عرض ===== -->
+        <div class="search-bar">
+            <i class="bi bi-search search-icon"></i>
+            <input type="text" class="form-control" placeholder="جستجوی نام پرسنل...">
+        </div>
+
+        <h2 class="section-title">لیست حضور و غیاب پرسنل</h2>
+
+        <!-- ===== کارت‌های پرسنل ===== -->
+
+        <!-- ---- کارمند ۱ (هنوز ثبت نشده) ---- -->
+        <div class="att-card">
+            <!-- سمت راست: نام + ساعت ورود/خروج -->
+            <div class="att-info">
+                <div class="name">علی رضایی</div>
+                <div class="times">
+                    <span class="entry-time not-set"><i class="bi bi-box-arrow-in-left"></i> ورود: ثبت نشده</span>
+                    <span class="exit-time not-set"><i class="bi bi-box-arrow-right"></i> خروج: ثبت نشده</span>
+                </div>
+            </div>
+            <!-- سمت چپ: دکمه ثبت سریع + دکمه مدال -->
+            <div class="att-actions">
+                <button class="btn-quick" onclick="quickCheckIn(this)">
+                    <i class="bi bi-box-arrow-in-left"></i> ثبت ورود
+                </button>
+                <button class="btn-detail" onclick="openActionModal('علی رضایی')" aria-label="جزئیات">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- ---- کارمند ۲ (ورود ثبت شده) ---- -->
+        <div class="att-card">
+            <div class="att-info">
+                <div class="name">مریم احمدی</div>
+                <div class="times">
+                    <span class="entry-time"><i class="bi bi-box-arrow-in-left"></i> ورود: 15:32</span>
+                    <span class="exit-time not-set"><i class="bi bi-box-arrow-right"></i> خروج: ثبت نشده</span>
+                </div>
+            </div>
+            <div class="att-actions">
+                <button class="btn-quick" onclick="quickCheckIn(this)">
+                    <i class="bi bi-box-arrow-in-left"></i> ثبت ورود
+                </button>
+                <button class="btn-detail" onclick="openActionModal('مریم احمدی')" aria-label="جزئیات">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- ---- کارمند ۳ (حضور کامل) ---- -->
+        <div class="att-card">
+            <div class="att-info">
+                <div class="name">حسین کریمی</div>
+                <div class="times">
+                    <span class="entry-time"><i class="bi bi-box-arrow-in-left"></i> ورود: 15:30</span>
+                    <span class="exit-time"><i class="bi bi-box-arrow-right"></i> خروج: 20:00</span>
+                </div>
+            </div>
+            <div class="att-actions">
+                <button class="btn-quick done" onclick="quickCheckIn(this)">
+                    <i class="bi bi-check-lg"></i> ثبت شد
+                </button>
+                <button class="btn-detail" onclick="openActionModal('حسین کریمی')" aria-label="جزئیات">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- ---- کارمند ۴ ---- -->
+        <div class="att-card">
+            <div class="att-info">
+                <div class="name">زهرا موسوی</div>
+                <div class="times">
+                    <span class="entry-time not-set"><i class="bi bi-box-arrow-in-left"></i> ورود: ثبت نشده</span>
+                    <span class="exit-time not-set"><i class="bi bi-box-arrow-right"></i> خروج: ثبت نشده</span>
+                </div>
+            </div>
+            <div class="att-actions">
+                <button class="btn-quick" onclick="quickCheckIn(this)">
+                    <i class="bi bi-box-arrow-in-left"></i> ثبت ورود
+                </button>
+                <button class="btn-detail" onclick="openActionModal('زهرا موسوی')" aria-label="جزئیات">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ============ Bottom Navigation ============ -->
+    <nav class="bottom-nav">
+        <a href="Dashboard.html" class="nav-item">
+            <i class="bi bi-house-door"></i><span>داشبورد</span>
+        </a>
+        <!-- تب فعال: حضور و غیاب (جایگزین گزارش‌ها) -->
+        <a href="Attendance.html" class="nav-item active">
+            <i class="bi bi-check2-square"></i><span>حضور و غیاب</span>
+        </a>
+        <a href="Personnel.html" class="nav-item">
+            <i class="bi bi-people"></i><span>پرسنل</span>
+        </a>
+        <a href="Shifts.html" class="nav-item">
+            <i class="bi bi-calendar-week"></i><span>شیفت‌ها</span>
+        </a>
+    </nav>
+
+</div><!-- /app-wrapper -->
+
+
+<!-- ============ مدال عملیات (ثبت حضور / مرخصی / غیبت) ============ -->
+<div class="modal fade action-modal" id="actionModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    ثبت وضعیت: <span id="modalEmpName">—</span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="return false;">
+
+                    <!-- گزینه ۱: ثبت حضور -->
+                    <div class="radio-card active">
+                        <input class="form-check-input" type="radio" name="actionType" id="optPresent"
+                               value="present" checked onchange="onActionTypeChange(this)">
+                        <label for="optPresent">ثبت حضور</label>
+                        <i class="bi bi-person-check-fill opt-icon present"></i>
+                    </div>
+
+                    <!-- فیلدهای حضور (فقط با انتخاب «ثبت حضور» نمایان) -->
+                    <div class="present-fields show" id="presentFields">
+                        <label class="form-label">پاس کاری</label>
+                        <select class="form-select">
+                            <option value="1" selected>پاس ۱ (۱۵:۳۰ - ۲۰:۰۰)</option>
+                            <option value="2">پاس ۲ (۱۹:۳۰ - ۲۳:۰۰)</option>
+                        </select>
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <label class="form-label">ساعت ورود</label>
+                                <input type="time" class="form-control" value="15:30">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label">ساعت خروج</label>
+                                <input type="time" class="form-control" value="20:00">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- گزینه ۲: ثبت مرخصی -->
+                    <div class="radio-card mt-2">
+                        <input class="form-check-input" type="radio" name="actionType" id="optLeave"
+                               value="leave" onchange="onActionTypeChange(this)">
+                        <label for="optLeave">ثبت مرخصی</label>
+                        <i class="bi bi-airplane-fill opt-icon leave"></i>
+                    </div>
+
+                    <!-- گزینه ۳: ثبت غیبت -->
+                    <div class="radio-card">
+                        <input class="form-check-input" type="radio" name="actionType" id="optAbsent"
+                               value="absent" onchange="onActionTypeChange(this)">
+                        <label for="optAbsent">ثبت غیبت</label>
+                        <i class="bi bi-person-x-fill opt-icon absent"></i>
+                    </div>
+
+                    <!-- دکمه ذخیره -->
+                    <button type="submit" class="btn btn-save mt-2" data-bs-dismiss="modal">
+                        <i class="bi bi-check2-circle"></i> ذخیره
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Bootstrap 5 JS Bundle ===== -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- ===== اسکریپت مشترک پروژه (شامل منطق حضور و غیاب و فارسی‌سازی اعداد) ===== -->
+<script src="assets/js/app.js"></script>
+</body>
+</html>

@@ -321,5 +321,87 @@ body {
 .shift-detail-stats .s-box .lbl { font-size: .68rem; color: #6c757d; }
 
 
+/* ============================================================
+   صفحه حضور و غیاب
+============================================================= */
+/* نوار انتخاب شیفت */
+.att-shift-select { margin-bottom: 12px; }
+.att-shift-select .form-label { display: flex; align-items: center; gap: 5px; }
+
+/* هشدار ویرایش اطلاعات گذشته (نوار زرد) */
+.past-warning {
+    display: none;                       /* پیش‌فرض مخفی */
+    align-items: center; gap: 8px;
+    background: #fff3cd; color: #664d03;
+    border: 1px solid #ffe69c; border-right: 4px solid #ffc107;
+    border-radius: 10px; padding: 10px 12px; margin-bottom: 14px;
+    font-size: .85rem; font-weight: 600;
+}
+.past-warning.show { display: flex; }
+
+/* کارت پرسنل در حضور و غیاب */
+.att-card {
+    background: #fff; border-radius: 14px; box-shadow: var(--card-shadow);
+    border: 1px solid #f0f0f0; padding: 12px 14px; margin-bottom: 12px;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+}
+.att-card .att-info { min-width: 0; flex: 1; }
+.att-card .att-info .name { font-weight: 700; font-size: .98rem; color: #212529; }
+.att-card .att-info .times {
+    font-size: .76rem; color: #6c757d; margin-top: 3px;
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.att-card .att-info .times span { display: flex; align-items: center; gap: 4px; }
+.att-card .att-info .times .not-set { color: #adb5bd; }
+
+/* دکمه‌های سمت چپ کارت */
+.att-card .att-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+/* دکمه سبز سریع «ثبت ورود» */
+.att-card .btn-quick {
+    background: #198754; color: #fff; border: none;
+    border-radius: 10px; padding: 8px 12px; font-size: .82rem; font-weight: 600;
+    min-height: 44px; display: flex; align-items: center; gap: 5px; white-space: nowrap;
+}
+.att-card .btn-quick:disabled { opacity: .75; }
+.att-card .btn-quick.done { background: #d1e7dd; color: #0f5132; }
+/* دکمه جزئیات (مدال) */
+.att-card .btn-detail {
+    background: #e8f3ef; color: var(--brand-green); border: none;
+    border-radius: 10px; width: 44px; height: 44px; min-height: 44px;
+    display: flex; align-items: center; justify-content: center; font-size: 1.15rem;
+}
+
+/* ====================== مدال عملیات حضور و غیاب ====================== */
+.action-modal .modal-content { border: none; border-radius: 18px; }
+.action-modal .modal-header { border-bottom: 1px solid #f0f0f0; }
+.action-modal .modal-title { font-weight: 700; font-size: 1rem; }
+/* گزینه‌های رادیویی به‌صورت کارت عمودی */
+.action-modal .radio-card {
+    display: flex; align-items: center; gap: 10px;
+    border: 1px solid #e9ecef; border-radius: 12px;
+    padding: 12px 14px; margin-bottom: 10px; cursor: pointer; min-height: 44px;
+    transition: border-color .15s, background .15s;
+}
+.action-modal .radio-card label { cursor: pointer; font-weight: 600; color: #343a40; flex: 1; margin: 0; }
+.action-modal .radio-card .form-check-input { margin: 0; width: 1.25em; height: 1.25em; }
+/* هایلایت گزینه‌ی انتخاب‌شده */
+.action-modal .radio-card.active { border-color: var(--brand-green); background: #f3f8f6; }
+.action-modal .radio-card .opt-icon { font-size: 1.15rem; }
+.action-modal .radio-card .opt-icon.present { color: #198754; }
+.action-modal .radio-card .opt-icon.leave   { color: #0dcaf0; }
+.action-modal .radio-card .opt-icon.absent  { color: #dc3545; }
+
+/* فیلدهای جزئیات حضور (پاس و ساعت‌ها) */
+.present-fields { display: none; margin-top: 4px; }
+.present-fields.show { display: block; }
+.present-fields .row { margin-top: 6px; }
+
+.action-modal .btn-save {
+    width: 100%; border-radius: 12px;
+    background: var(--brand-green); color: #fff; font-weight: 700; padding: 12px;
+}
+.action-modal .btn-save:hover { background: #063a2d; color: #fff; }
+
+
 /* ====================== کمکی: صفحات داخلی (ساب‌روتر دمو) ====================== */
 .subpage { display: none; }

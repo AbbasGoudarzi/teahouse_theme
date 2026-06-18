@@ -82,3 +82,72 @@ function togglePass(timesId, checked) {
     const el = document.getElementById(timesId);
     if (el) el.classList.toggle('show', checked);
 }
+
+
+/* ------------------------------------------------------------
+   ۴) صفحه حضور و غیاب
+------------------------------------------------------------- */
+
+/* الف) هشدار ویرایش اطلاعات گذشته
+   - اگر شیفت انتخاب‌شده دارای data-past="true" باشد، نوار زرد نمایش داده می‌شود */
+function onShiftChange(selectEl) {
+    const warning = document.getElementById('pastWarning');
+    if (!warning) return;
+    const opt = selectEl.options[selectEl.selectedIndex];
+    const isPast = opt && opt.dataset.past === 'true';
+    warning.classList.toggle('show', isPast);
+}
+
+/* ب) ثبت ورود سریع (یک کلیک) با حالت لودینگ
+   - اسپینر روی دکمه فعال می‌شود، سپس (شبیه‌سازی پاسخ سرور) ساعت ورود ثبت می‌گردد
+   - در Laravel به‌جای setTimeout یک درخواست Ajax قرار می‌گیرد */
+function quickCheckIn(btn) {
+    if (btn.classList.contains('done')) return;
+
+    const original = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> در حال ثبت...';
+
+    // شبیه‌سازی پاسخ سرور
+    setTimeout(() => {
+        const card = btn.closest('.att-card');
+        const entrySpan = card ? card.querySelector('.entry-time') : null;
+        if (entrySpan) {
+            entrySpan.classList.remove('not-set');
+            entrySpan.innerHTML = '<i class="bi bi-box-arrow-in-left"></i> ورود: ' + currentTime();
+        }
+        btn.disabled = false;
+        btn.classList.add('done');
+        btn.innerHTML = '<i class="bi bi-check-lg"></i> ثبت شد';
+    }, 1200);
+}
+
+/* ساعت جاری به‌صورت HH:MM (برای ثبت سریع) */
+function currentTime() {
+    const d = new Date();
+    const hh = String(d.getHours()).padStart(2, '0');
+    const mm = String(d.getMinutes()).padStart(2, '0');
+    return hh + ':' + mm;
+}
+
+/* ج) مدال عملیات: نمایش/مخفی فیلدهای حضور بر اساس رادیوی انتخاب‌شده
+   - با تغییر هر رادیو، کلاس active کارت‌ها و نمایش فیلدهای «ثبت حضور» مدیریت می‌شود */
+function onActionTypeChange(radio) {
+    // مدیریت هایلایت کارت‌های رادیویی
+    document.querySelectorAll('.action-modal .radio-card').forEach(card => {
+        card.classList.toggle('active', card.contains(radio) && radio.checked);
+    });
+    // نمایش فیلدهای حضور فقط برای گزینه‌ی «ثبت حضور»
+    const fields = document.getElementById('presentFields');
+    if (fields) fields.classList.toggle('show', radio.value === 'present' && radio.checked);
+}
+
+/* باز کردن مدال جزئیات و قراردادن نام کارمند در عنوان آن */
+function openActionModal(name) {
+    const titleEmp = document.getElementById('modalEmpName');
+    if (titleEmp) titleEmp.textContent = name;
+    const modalEl = document.getElementById('actionModal');
+    if (modalEl && window.bootstrap) {
+        bootstrap.Modal.getOrCreateInstance(modalEl).show();
+    }
+}
