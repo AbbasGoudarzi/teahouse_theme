@@ -166,6 +166,37 @@ function onActionTypeChange(radio) {
     if (fields) fields.classList.toggle('show', radio.value === 'present' && radio.checked);
 }
 
+/* د) جستجوی زنده در لیست حضور و غیاب
+   - با هر بار تایپ در سرچ‌باکس، کارت‌هایی که نامشان شامل عبارت جستجو نیست مخفی می‌شوند
+   - عبارت و نام‌ها قبل از مقایسه نرمال می‌شوند (یکسان‌سازی ی/ك عربی و حذف فاصله اضافه)
+   - در صورت نبود نتیجه، پیام «یافت نشد» نمایش داده می‌شود */
+function normalizeFa(str) {
+    return (str || '')
+        .replace(/ي/g, 'ی') // ي عربی → ی فارسی
+        .replace(/ك/g, 'ک') // ك عربی → ک فارسی
+        .replace(/\s+/g, ' ')
+        .trim()
+        .toLowerCase();
+}
+
+function filterAttendance(input) {
+    const term = normalizeFa(input.value);
+    const cards = document.querySelectorAll('#page-list .att-card');
+    let visible = 0;
+
+    cards.forEach(card => {
+        const nameEl = card.querySelector('.name');
+        const name = normalizeFa(nameEl ? nameEl.textContent : '');
+        const match = name.includes(term);
+        card.style.display = match ? '' : 'none';
+        if (match) visible++;
+    });
+
+    // نمایش/مخفی پیام «نتیجه‌ای یافت نشد»
+    const empty = document.getElementById('attEmpty');
+    if (empty) empty.style.display = visible === 0 ? '' : 'none';
+}
+
 /* باز کردن مدال جزئیات و قراردادن نام کارمند در عنوان آن */
 function openActionModal(name) {
     const titleEmp = document.getElementById('modalEmpName');

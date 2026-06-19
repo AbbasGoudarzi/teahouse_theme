@@ -55,7 +55,13 @@
         <!-- ===== Search Box تمام‌عرض ===== -->
         <div class="search-bar">
             <i class="bi bi-search search-icon"></i>
-            <input type="text" class="form-control" placeholder="جستجوی نام پرسنل...">
+            <input type="text" class="form-control" id="attSearch" placeholder="جستجوی نام پرسنل..."
+                   oninput="filterAttendance(this)">
+        </div>
+
+        <!-- پیام «نتیجه‌ای یافت نشد» (در ابتدا مخفی) -->
+        <div class="att-empty text-danger" id="attEmpty" style="display:none;">
+            <i class="bi bi-search"></i> هیچ پرسنلی با این نام یافت نشد.
         </div>
 
         <h2 class="section-title">لیست حضور و غیاب پرسنل</h2>
@@ -87,7 +93,7 @@
         <!-- ---- کارمند ۲ (ورود ثبت شده) ---- -->
         <div class="att-card">
             <div class="att-info">
-                <div class="name">مریم احمدی</div>
+                <div class="name">سعید نوری</div>
                 <div class="times">
                     <span class="entry-time"><i class="bi bi-box-arrow-in-left"></i> ورود: 15:32</span>
                     <span class="exit-time not-set"><i class="bi bi-box-arrow-right"></i> خروج: ثبت نشده</span>
@@ -98,7 +104,7 @@
                 <button class="btn-quick checkout" data-state="out" onclick="quickAttendance(this)">
                     <i class="bi bi-box-arrow-right"></i> ثبت خروج
                 </button>
-                <button class="btn-detail" onclick="openActionModal('مریم احمدی')" aria-label="جزئیات">
+                <button class="btn-detail" onclick="openActionModal('سعید نوری')" aria-label="جزئیات">
                     <i class="bi bi-three-dots-vertical"></i>
                 </button>
             </div>
@@ -127,7 +133,7 @@
         <!-- ---- کارمند ۴ ---- -->
         <div class="att-card">
             <div class="att-info">
-                <div class="name">زهرا موسوی</div>
+                <div class="name">محمد محمدی</div>
                 <div class="times">
                     <span class="entry-time not-set"><i class="bi bi-box-arrow-in-left"></i> ورود: ثبت نشده</span>
                     <span class="exit-time not-set"><i class="bi bi-box-arrow-right"></i> خروج: ثبت نشده</span>
@@ -138,7 +144,159 @@
                 <button class="btn-quick" data-state="in" onclick="quickAttendance(this)">
                     <i class="bi bi-box-arrow-in-left"></i> ثبت ورود
                 </button>
-                <button class="btn-detail" onclick="openActionModal('زهرا موسوی')" aria-label="جزئیات">
+                <button class="btn-detail" onclick="openActionModal('محمد محمدی')" aria-label="جزئیات">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- ---- کارمند ۵ (حضور کامل) ---- -->
+        <div class="att-card">
+            <div class="att-info">
+                <div class="name">رضا حسینی</div>
+                <div class="times">
+                    <span class="entry-time"><i class="bi bi-box-arrow-in-left"></i> ورود: 15:28</span>
+                    <span class="exit-time"><i class="bi bi-box-arrow-right"></i> خروج: 19:55</span>
+                </div>
+            </div>
+            <div class="att-actions">
+                <button class="btn-quick done" data-state="done" onclick="quickAttendance(this)">
+                    <i class="bi bi-check-lg"></i> ثبت شد
+                </button>
+                <button class="btn-detail" onclick="openActionModal('رضا حسینی')" aria-label="جزئیات">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- ---- کارمند ۶ (ورود ثبت شده) ---- -->
+        <div class="att-card">
+            <div class="att-info">
+                <div class="name">امیر قاسمی</div>
+                <div class="times">
+                    <span class="entry-time"><i class="bi bi-box-arrow-in-left"></i> ورود: 19:40</span>
+                    <span class="exit-time not-set"><i class="bi bi-box-arrow-right"></i> خروج: ثبت نشده</span>
+                </div>
+            </div>
+            <div class="att-actions">
+                <button class="btn-quick checkout" data-state="out" onclick="quickAttendance(this)">
+                    <i class="bi bi-box-arrow-right"></i> ثبت خروج
+                </button>
+                <button class="btn-detail" onclick="openActionModal('امیر قاسمی')" aria-label="جزئیات">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- ---- کارمند ۷ (هنوز ثبت نشده) ---- -->
+        <div class="att-card">
+            <div class="att-info">
+                <div class="name">مهدی صادقی</div>
+                <div class="times">
+                    <span class="entry-time not-set"><i class="bi bi-box-arrow-in-left"></i> ورود: ثبت نشده</span>
+                    <span class="exit-time not-set"><i class="bi bi-box-arrow-right"></i> خروج: ثبت نشده</span>
+                </div>
+            </div>
+            <div class="att-actions">
+                <button class="btn-quick" data-state="in" onclick="quickAttendance(this)">
+                    <i class="bi bi-box-arrow-in-left"></i> ثبت ورود
+                </button>
+                <button class="btn-detail" onclick="openActionModal('مهدی صادقی')" aria-label="جزئیات">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- ---- کارمند ۸ (حضور کامل) ---- -->
+        <div class="att-card">
+            <div class="att-info">
+                <div class="name">حسن اکبری</div>
+                <div class="times">
+                    <span class="entry-time"><i class="bi bi-box-arrow-in-left"></i> ورود: 15:35</span>
+                    <span class="exit-time"><i class="bi bi-box-arrow-right"></i> خروج: 20:05</span>
+                </div>
+            </div>
+            <div class="att-actions">
+                <button class="btn-quick done" data-state="done" onclick="quickAttendance(this)">
+                    <i class="bi bi-check-lg"></i> ثبت شد
+                </button>
+                <button class="btn-detail" onclick="openActionModal('حسن اکبری')" aria-label="جزئیات">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- ---- کارمند ۹ (ورود ثبت شده) ---- -->
+        <div class="att-card">
+            <div class="att-info">
+                <div class="name">جواد کاظمی</div>
+                <div class="times">
+                    <span class="entry-time"><i class="bi bi-box-arrow-in-left"></i> ورود: 19:45</span>
+                    <span class="exit-time not-set"><i class="bi bi-box-arrow-right"></i> خروج: ثبت نشده</span>
+                </div>
+            </div>
+            <div class="att-actions">
+                <button class="btn-quick checkout" data-state="out" onclick="quickAttendance(this)">
+                    <i class="bi bi-box-arrow-right"></i> ثبت خروج
+                </button>
+                <button class="btn-detail" onclick="openActionModal('جواد کاظمی')" aria-label="جزئیات">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- ---- کارمند ۱۰ (هنوز ثبت نشده) ---- -->
+        <div class="att-card">
+            <div class="att-info">
+                <div class="name">ابراهیم رحیمی</div>
+                <div class="times">
+                    <span class="entry-time not-set"><i class="bi bi-box-arrow-in-left"></i> ورود: ثبت نشده</span>
+                    <span class="exit-time not-set"><i class="bi bi-box-arrow-right"></i> خروج: ثبت نشده</span>
+                </div>
+            </div>
+            <div class="att-actions">
+                <button class="btn-quick" data-state="in" onclick="quickAttendance(this)">
+                    <i class="bi bi-box-arrow-in-left"></i> ثبت ورود
+                </button>
+                <button class="btn-detail" onclick="openActionModal('ابراهیم رحیمی')" aria-label="جزئیات">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- ---- کارمند ۱۱ (حضور کامل) ---- -->
+        <div class="att-card">
+            <div class="att-info">
+                <div class="name">مجید یوسفی</div>
+                <div class="times">
+                    <span class="entry-time"><i class="bi bi-box-arrow-in-left"></i> ورود: 15:25</span>
+                    <span class="exit-time"><i class="bi bi-box-arrow-right"></i> خروج: 19:50</span>
+                </div>
+            </div>
+            <div class="att-actions">
+                <button class="btn-quick done" data-state="done" onclick="quickAttendance(this)">
+                    <i class="bi bi-check-lg"></i> ثبت شد
+                </button>
+                <button class="btn-detail" onclick="openActionModal('مجید یوسفی')" aria-label="جزئیات">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- ---- کارمند ۱۲ (هنوز ثبت نشده) ---- -->
+        <div class="att-card">
+            <div class="att-info">
+                <div class="name">وحید مرادی</div>
+                <div class="times">
+                    <span class="entry-time not-set"><i class="bi bi-box-arrow-in-left"></i> ورود: ثبت نشده</span>
+                    <span class="exit-time not-set"><i class="bi bi-box-arrow-right"></i> خروج: ثبت نشده</span>
+                </div>
+            </div>
+            <div class="att-actions">
+                <button class="btn-quick" data-state="in" onclick="quickAttendance(this)">
+                    <i class="bi bi-box-arrow-in-left"></i> ثبت ورود
+                </button>
+                <button class="btn-detail" onclick="openActionModal('وحید مرادی')" aria-label="جزئیات">
                     <i class="bi bi-three-dots-vertical"></i>
                 </button>
             </div>
@@ -190,13 +348,13 @@
                   <div class="cs-list" id="csList1">
                       <div class="cs-row">
                           <input class="form-check-input row-check" type="checkbox" checked>
-                          <span class="cs-name">مریم احمدی</span>
+                          <span class="cs-name">سعید نوری</span>
                           <span class="cs-time"><i class="bi bi-box-arrow-in-left"></i> ورود: 15:32</span>
                           <i class="bi bi-check-circle-fill cs-check-icon"></i>
                       </div>
                       <div class="cs-row">
                           <input class="form-check-input row-check" type="checkbox" checked>
-                          <span class="cs-name">سعید نوری</span>
+                          <span class="cs-name">امیر قاسمی</span>
                           <span class="cs-time"><i class="bi bi-box-arrow-in-left"></i> ورود: 19:40</span>
                           <i class="bi bi-check-circle-fill cs-check-icon"></i>
                       </div>
@@ -230,7 +388,7 @@
                       </div>
                       <div class="cs-row">
                           <input class="form-check-input row-check" type="checkbox" checked>
-                          <span class="cs-name">زهرا موسوی</span>
+                          <span class="cs-name">محمد محمدی</span>
                           <i class="bi bi-check-circle-fill cs-check-icon"></i>
                       </div>
                   </div>
