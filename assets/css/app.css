@@ -510,5 +510,70 @@ body {
 .btn-close-shift.closed { background: #d1e7dd; color: #0f5132; }
 
 
+/* ============================================================
+   صفحه ورود (Login)
+============================================================= */
+/* بدنه‌ی صفحه ورود — گرادینت سبز یشمی تمام‌صفحه */
+body.login-body { background: linear-gradient(160deg, var(--brand-green-light) 0%, var(--brand-green) 100%); }
+
+.login-wrapper {
+    max-width: 480px; margin: 0 auto; min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 24px 20px;
+}
+
+/* لوگو / برندینگ بالای فرم */
+.login-brand { text-align: center; color: #fff; margin-bottom: 26px; }
+.login-brand .brand-logo {
+    width: 84px; height: 84px; border-radius: 24px; margin: 0 auto 14px;
+    background: rgba(255, 255, 255, .15); border: 1px solid rgba(255, 255, 255, .25);
+    display: flex; align-items: center; justify-content: center; font-size: 2.6rem;
+}
+.login-brand .brand-title { font-size: 1.4rem; font-weight: 700; margin: 0; }
+.login-brand .brand-sub { font-size: .88rem; opacity: .85; margin-top: 4px; }
+
+/* کارت سفید فرم ورود */
+.login-card {
+    background: #fff; border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, .18);
+    padding: 24px 20px;
+}
+.login-card .login-heading { font-size: 1.1rem; font-weight: 700; color: #212529; margin: 0 0 4px; }
+.login-card .login-desc { font-size: .82rem; color: #6c757d; margin-bottom: 20px; }
+
+/* فیلد ورودی با آیکون چسبیده */
+.login-field { margin-bottom: 16px; }
+.login-field .input-group-text {
+    background: #f3f8f6; border: 1px solid #e3e6e9; color: var(--brand-green);
+    border-radius: 12px 0 0 12px; font-size: 1.15rem;
+}
+.login-field .form-control {
+    border-radius: 0 12px 12px 0; border: 1px solid #e3e6e9; border-right: none;
+}
+.login-field .form-control:focus {
+    border-color: var(--brand-green-light); box-shadow: none;
+}
+/* رمز عبور معمولاً انگلیسی/عددی است → چپ‌چین */
+.login-field input[type="password"],
+.login-field input[type="text"]#password { direction: ltr; text-align: left; }
+/* دکمه نمایش/مخفی رمز عبور */
+.login-field .toggle-pass {
+    background: #f3f8f6; border: 1px solid #e3e6e9; border-left: none;
+    border-radius: 0 12px 12px 0; color: #6c757d; font-size: 1.1rem;
+}
+.login-field .toggle-pass:hover { color: var(--brand-green); }
+
+/* دکمه ورود */
+.btn-login {
+    width: 100%; border-radius: 12px; min-height: 50px;
+    background: var(--brand-green); color: #fff; font-weight: 700; font-size: 1rem;
+    border: none; margin-top: 6px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn-login:hover, .btn-login:focus { background: #063a2d; color: #fff; }
+
+/* پاورقی کوچک زیر کارت */
+.login-footer { text-align: center; color: rgba(255, 255, 255, .8); font-size: .78rem; margin-top: 20px; }
+
+
 /* ====================== کمکی: صفحات داخلی (ساب‌روتر دمو) ====================== */
 .subpage { display: none; }
