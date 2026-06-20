@@ -48,6 +48,23 @@ body {
     display: flex; align-items: center; justify-content: center;
     color: #fff; font-size: 1.3rem; text-decoration: none; border: none;
 }
+.app-header .header-icon { cursor: pointer; padding: 0; }
+.app-header .header-icon:focus { box-shadow: none; outline: none; }
+
+/* منوی کشویی پروفایل (تنظیمات / خروج) */
+.profile-menu {
+    border: none; border-radius: 14px; padding: 6px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .14); min-width: 168px;
+    font-size: .9rem;
+}
+.profile-menu .dropdown-item {
+    border-radius: 10px; padding: 10px 12px; font-weight: 600; color: #343a40;
+    display: flex; align-items: center; gap: 9px; min-height: 44px;
+}
+.profile-menu .dropdown-item i { font-size: 1.1rem; }
+.profile-menu .dropdown-item:active { background: var(--brand-green); color: #fff; }
+.profile-menu .dropdown-item.text-danger:active { background: #dc3545; color: #fff; }
+.profile-menu .dropdown-divider { margin: 4px 6px; }
 
 /* ====================== Main ====================== */
 .main-content { padding: 16px; }
@@ -573,6 +590,43 @@ body.login-body { background: linear-gradient(160deg, var(--brand-green-light) 0
 
 /* پاورقی کوچک زیر کارت */
 .login-footer { text-align: center; color: rgba(255, 255, 255, .8); font-size: .78rem; margin-top: 20px; }
+
+
+/* ============================================================
+   صفحه تنظیمات (تغییر رمز عبور)
+============================================================= */
+/* عنوان کوچک هر بخش تنظیمات */
+.settings-section-title {
+    font-size: .9rem; font-weight: 700; color: var(--brand-green);
+    display: flex; align-items: center; gap: 7px; margin-bottom: 14px;
+}
+
+/* فیلد رمز عبور با دکمه نمایش/مخفی */
+.password-field { margin-bottom: 16px; }
+.password-field .input-wrap { position: relative; }
+.password-field .form-control {
+    border-radius: 12px; border: 1px solid #e3e6e9;
+    padding-left: 44px;                  /* جا برای دکمه چشم (سمت چپ در RTL) */
+    direction: ltr; text-align: left;
+}
+.password-field .form-control:focus { border-color: var(--brand-green-light); box-shadow: none; }
+.password-field .toggle-eye {
+    position: absolute; top: 50%; left: 6px; transform: translateY(-50%);
+    width: 34px; height: 34px; min-height: 34px; border: none; background: transparent;
+    color: #adb5bd; font-size: 1.1rem; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+}
+.password-field .toggle-eye:hover { color: var(--brand-green); }
+
+/* کادر پیام (موفقیت / خطا) — پیش‌فرض مخفی */
+.settings-alert {
+    display: none; align-items: center; gap: 8px;
+    border-radius: 10px; padding: 10px 12px; margin-bottom: 14px;
+    font-size: .85rem; font-weight: 600;
+}
+.settings-alert.show { display: flex; }
+.settings-alert.success { background: #d1e7dd; color: #0f5132; border: 1px solid #badbcc; }
+.settings-alert.error { background: #f8d7da; color: #842029; border: 1px solid #f5c2c7; }
 
 
 /* ====================== کمکی: صفحات داخلی (ساب‌روتر دمو) ====================== */

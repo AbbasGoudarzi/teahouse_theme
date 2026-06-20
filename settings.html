@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <!-- viewport برای رفتار صحیح Mobile-First و PWA -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#084738">
+    <title>تنظیمات | مدیریت چایخانه</title>
+
+    <!-- ===== Bootstrap 5 RTL (محلی) ===== -->
+    <link href="assets/vendor/bootstrap/bootstrap.rtl.min.css" rel="stylesheet">
+    <!-- ===== Bootstrap Icons (محلی) ===== -->
+    <link rel="stylesheet" href="assets/vendor/bootstrap-icons/bootstrap-icons.min.css">
+    <!-- ===== فونت وزیرمتن (محلی) ===== -->
+    <link href="assets/vendor/vazirmatn/vazirmatn.css" rel="stylesheet">
+    <!-- ===== استایل مشترک پروژه ===== -->
+    <link href="assets/css/app.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- ================= Wrapper اصلی (عرض موبایل) ================= -->
+<div class="app-wrapper">
+
+    <!-- ============ Header با دکمه بازگشت ============ -->
+    <header class="app-header sticky-top">
+        <h1 class="page-title">تنظیمات</h1>
+        <!-- دکمه بازگشت سمت چپ -->
+        <a href="index.html" class="back-btn" aria-label="بازگشت"><i class="bi bi-arrow-left"></i></a>
+    </header>
+
+    <!-- ============ Main ============ -->
+    <main class="main-content">
+
+        <!-- ============ کارت تغییر رمز عبور ============ -->
+        <div class="form-card">
+            <div class="settings-section-title">
+                <i class="bi bi-shield-lock"></i> تغییر رمز عبور
+            </div>
+
+            <!-- کادر پیام (موفقیت/خطا) -->
+            <div class="settings-alert" id="passwordAlert" role="alert"></div>
+
+            <form id="passwordForm" onsubmit="return onChangePassword(this);" novalidate>
+
+                <!-- رمز عبور فعلی -->
+                <div class="password-field">
+                    <label for="currentPassword" class="form-label">رمز عبور فعلی</label>
+                    <div class="input-wrap">
+                        <input type="password" class="form-control" id="currentPassword"
+                               placeholder="••••••••" autocomplete="current-password">
+                        <button type="button" class="toggle-eye" onclick="togglePassword(this)"
+                                aria-label="نمایش رمز عبور"><i class="bi bi-eye"></i></button>
+                    </div>
+                </div>
+
+                <!-- رمز عبور جدید -->
+                <div class="password-field">
+                    <label for="newPassword" class="form-label">رمز عبور جدید</label>
+                    <div class="input-wrap">
+                        <input type="password" class="form-control" id="newPassword"
+                               placeholder="حداقل ۶ کاراکتر" autocomplete="new-password">
+                        <button type="button" class="toggle-eye" onclick="togglePassword(this)"
+                                aria-label="نمایش رمز عبور"><i class="bi bi-eye"></i></button>
+                    </div>
+                </div>
+
+                <!-- تکرار رمز عبور جدید -->
+                <div class="password-field">
+                    <label for="confirmPassword" class="form-label">تکرار رمز عبور جدید</label>
+                    <div class="input-wrap">
+                        <input type="password" class="form-control" id="confirmPassword"
+                               placeholder="رمز جدید را دوباره وارد کنید" autocomplete="new-password">
+                        <button type="button" class="toggle-eye" onclick="togglePassword(this)"
+                                aria-label="نمایش رمز عبور"><i class="bi bi-eye"></i></button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-submit">
+                    <i class="bi bi-check2-circle"></i> ثبت رمز عبور جدید
+                </button>
+            </form>
+        </div>
+
+    </main>
+
+    <!-- ============ Bottom Navigation (نوار پایین) ============ -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <i class="bi bi-house-door-fill"></i>
+            <span>داشبورد</span>
+        </a>
+        <a href="attendance.html" class="nav-item">
+            <i class="bi bi-check2-square"></i>
+            <span>حضور و غیاب</span>
+        </a>
+        <a href="personnel.html" class="nav-item">
+            <i class="bi bi-people"></i>
+            <span>پرسنل</span>
+        </a>
+        <a href="shifts.html" class="nav-item">
+            <i class="bi bi-calendar-week"></i>
+            <span>شیفت‌ها</span>
+        </a>
+    </nav>
+
+</div><!-- /app-wrapper -->
+
+<!-- ===== Bootstrap 5 JS Bundle ===== -->
+<script src="assets/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<!-- ===== اسکریپت مشترک پروژه ===== -->
+<script src="assets/js/app.js"></script>
+</body>
+</html>

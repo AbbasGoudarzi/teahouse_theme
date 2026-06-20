@@ -25,10 +25,18 @@
     <header class="app-header sticky-top">
         <!-- نام صفحه سمت راست -->
         <h1 class="page-title">داشبورد</h1>
-        <!-- آیکون پروفایل سمت چپ -->
-        <a href="#" class="header-icon" aria-label="پروفایل">
-            <i class="bi bi-person"></i>
-        </a>
+        <!-- آیکون پروفایل سمت چپ + منوی کشویی -->
+        <div class="dropdown">
+            <button type="button" class="header-icon" id="profileMenu"
+                    data-bs-toggle="dropdown" aria-expanded="false" aria-label="پروفایل">
+                <i class="bi bi-person"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end profile-menu" aria-labelledby="profileMenu">
+                <li><a class="dropdown-item" href="settings.html"><i class="bi bi-gear"></i> تنظیمات</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item text-danger" href="login.html" onclick="logout(event)"><i class="bi bi-box-arrow-right"></i> خروج</a></li>
+            </ul>
+        </div>
     </header>
 
     <!-- ============ Main (محتوای متغیر صفحه) ============ -->

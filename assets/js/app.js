@@ -276,3 +276,65 @@ function confirmCloseShift() {
     finalBtn.classList.add('closed');
     finalBtn.innerHTML = '<i class="bi bi-check-circle-fill"></i> شیفت با موفقیت بسته شد';
 }
+
+
+/* ------------------------------------------------------------
+   ۶) منوی پروفایل هدر (تنظیمات / خروج)
+   - خروج: پس از تایید کاربر، هدایت به صفحه ورود
+   - در Laravel به‌جای redirect مستقیم، route('logout') قرار می‌گیرد
+------------------------------------------------------------- */
+function logout(e) {
+    if (e) e.preventDefault();
+    if (window.confirm('آیا می‌خواهید از حساب خود خارج شوید؟')) {
+        window.location.href = 'login.html';
+    }
+}
+
+
+/* ------------------------------------------------------------
+   ۷) صفحه تنظیمات — تغییر رمز عبور (دمو)
+   - اعتبارسنجی: پر بودن فیلدها، طول حداقل ۶، و تطابق رمز جدید با تکرار آن
+   - پیام موفقیت/خطا داخل کادر فرم نمایش داده می‌شود
+   - در Laravel این منطق با اعتبارسنجی سمت سرور جایگزین می‌شود
+------------------------------------------------------------- */
+function onChangePassword(form) {
+    const current = form.querySelector('#currentPassword');
+    const next = form.querySelector('#newPassword');
+    const confirm = form.querySelector('#confirmPassword');
+    const alertBox = document.getElementById('passwordAlert');
+
+    function showAlert(type, message) {
+        if (!alertBox) return;
+        alertBox.className = 'settings-alert ' + type + ' show';
+        const icon = type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill';
+        alertBox.innerHTML = '<i class="bi ' + icon + '"></i> <span>' + message + '</span>';
+    }
+
+    if (!current.value || !next.value || !confirm.value) {
+        showAlert('error', 'لطفاً همه‌ی فیلدها را تکمیل کنید.');
+        return false;
+    }
+    if (next.value.length < 6) {
+        showAlert('error', 'رمز عبور جدید باید حداقل ۶ کاراکتر باشد.');
+        return false;
+    }
+    if (next.value !== confirm.value) {
+        showAlert('error', 'رمز عبور جدید با تکرار آن مطابقت ندارد.');
+        return false;
+    }
+
+    // در نسخه واقعی: ارسال به سرور
+    showAlert('success', 'رمز عبور با موفقیت تغییر کرد.');
+    form.reset();
+    return false;
+}
+
+/* نمایش/مخفی کردن یک فیلد رمز عبور (دکمه چشم) */
+function togglePassword(btn) {
+    const input = btn.parentNode.querySelector('input');
+    if (!input) return;
+    const isText = input.type === 'text';
+    input.type = isText ? 'password' : 'text';
+    btn.querySelector('i').className = isText ? 'bi bi-eye' : 'bi bi-eye-slash';
+    btn.setAttribute('aria-label', isText ? 'نمایش رمز عبور' : 'مخفی کردن رمز عبور');
+}
