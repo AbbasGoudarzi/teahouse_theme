@@ -285,9 +285,11 @@ function confirmCloseShift() {
 ------------------------------------------------------------- */
 function logout(e) {
     if (e) e.preventDefault();
-    if (window.confirm('آیا می‌خواهید از حساب خود خارج شوید؟')) {
+    var logoutModal = new bootstrap.Modal(document.getElementById('logoutModal'));
+    logoutModal.show();
+    document.getElementById('btnConfirmLogout').onclick = function () {
         window.location.href = 'login.html';
-    }
+    };
 }
 
 
