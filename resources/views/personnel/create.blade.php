@@ -13,10 +13,19 @@
     @csrf
 
     <div class="mb-3">
-        <label class="form-label">نام و نام خانوادگی</label>
-        <input type="text" class="form-control @error('full_name') is-invalid @enderror"
-               name="full_name" value="{{ old('full_name') }}" placeholder="مثلاً علی رضایی">
-        @error('full_name')
+        <label class="form-label">نام</label>
+        <input type="text" class="form-control @error('first_name') is-invalid @enderror"
+               name="first_name" value="{{ old('first_name') }}" placeholder="مثلاً علی">
+        @error('first_name')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">نام خانوادگی</label>
+        <input type="text" class="form-control @error('last_name') is-invalid @enderror"
+               name="last_name" value="{{ old('last_name') }}" placeholder="مثلاً رضایی">
+        @error('last_name')
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror
     </div>

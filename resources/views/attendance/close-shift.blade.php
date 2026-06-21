@@ -31,7 +31,7 @@
             <div class="cs-row">
                 <input class="form-check-input row-check" type="checkbox" checked
                        name="no_exit[]" value="{{ $person->id }}">
-                <span class="cs-name">{{ $person->full_name }}</span>
+                <span class="cs-name">{{ $person->first_name }} {{ $person->last_name }}</span>
                 <span class="cs-time"><i class="bi bi-box-arrow-in-left"></i> ورود: {{ $person->entry_time }}</span>
                 <i class="bi bi-check-circle-fill cs-check-icon"></i>
             </div>
@@ -61,7 +61,7 @@
             <div class="cs-row">
                 <input class="form-check-input row-check" type="checkbox" checked
                        name="unknown[]" value="{{ $person->id }}">
-                <span class="cs-name">{{ $person->full_name }}</span>
+                <span class="cs-name">{{ $person->first_name }} {{ $person->last_name }}</span>
                 <i class="bi bi-check-circle-fill cs-check-icon"></i>
             </div>
             @endforeach

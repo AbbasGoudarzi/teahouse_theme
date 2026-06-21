@@ -12,7 +12,7 @@
 <div class="person-card mb-3">
     <div class="avatar"><i class="bi bi-person-fill"></i></div>
     <div class="person-info">
-        <div class="name">{{ $person->full_name }}</div>
+        <div class="name">{{ $person->first_name }} {{ $person->last_name }}</div>
         <div class="sub">{{ $person->branch->name }} · {{ $person->mobile }}</div>
     </div>
 </div>

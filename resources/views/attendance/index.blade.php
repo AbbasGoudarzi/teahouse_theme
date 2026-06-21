@@ -37,7 +37,7 @@
 @foreach($personnel as $person)
 <div class="att-card">
     <div class="att-info">
-        <div class="name">{{ $person->full_name }}</div>
+        <div class="name">{{ $person->first_name }} {{ $person->last_name }}</div>
         <div class="times">
             @if($person->entry_time)
                 <span class="entry-time"><i class="bi bi-box-arrow-in-left"></i> ورود: {{ $person->entry_time }}</span>
@@ -66,7 +66,7 @@
                 <i class="bi bi-check-lg"></i> ثبت شد
             </button>
         @endif
-        <button class="btn-detail" onclick="openActionModal('{{ $person->full_name }}')" aria-label="جزئیات">
+        <button class="btn-detail" onclick="openActionModal('{{ $person->first_name }} {{ $person->last_name }}')" aria-label="جزئیات">
             <i class="bi bi-three-dots-vertical"></i>
         </button>
     </div>
